@@ -7,3 +7,11 @@
 //
 
 import Foundation
+import UIKit
+
+class AirbnbSessionView: UIView {
+    
+    var button: UIButton?
+    var containView: UIView?
+    
+}
