@@ -6,6 +6,29 @@
 //  Copyright (c) 2015 pixyzehn. All rights reserved.
 //
 
+/*
+view structer
+-----------------
+view
+    ---------------
+    wrapperView
+    ---------------
+    contentView
+    -------------
+        leftView
+        -----------
+            sessionView
+            ---------
+            title
+            ---------
+            button
+        -------------
+        rightView
+        ---------
+            airImageView
+*/
+
+
 import Foundation
 import UIKit
 
