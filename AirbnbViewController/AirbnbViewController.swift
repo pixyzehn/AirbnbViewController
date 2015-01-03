@@ -61,7 +61,28 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var currentIndexPath: NSIndexPath?
     
     let comlete = ({ () -> Void in })
-
+    
+    // number of data
+    var session: Int?
+    var rowsOfSession: [Int]?
+    
+    // sesion view
+    var sessionViews: Dictionary<Int, UIView>?
+    
+    // current index sesion view
+    var currentIndexSession: Int?
+    
+    // for animation
+    var isAnimation: Bool?
+    var topSession: AirbnbSessionView?
+    var middleSession: AirbnbSessionView?
+    var bottomSession: AirbnbSessionView?
+    
+    var lastIndexInSession: Dictionary<Int, UIView>?
+    var thumbnailImages: [UIImage]?
+    var viewControllers: [UIViewController]?
+    var heightAirMenuRow: CGFloat?
+    
     override init() {
         super.init()
     }
@@ -72,6 +93,18 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     convenience init(viewController: UIViewController, atIndexPath:NSIndexPath) {
         self.init()
+        let rect = UIScreen.mainScreen().applicationFrame
+        self.view.frame = CGRectMake(0, 0, rect.width, rect.height)
+
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if self.edgesForExtendedLayout != UIRectEdge.None {
+            self.edgesForExtendedLayout = UIRectEdge.None
+        }
+        
+        
     }
     
     func reloadData() {
