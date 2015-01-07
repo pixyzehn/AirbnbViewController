@@ -13,24 +13,26 @@ view
     ---------------
     wrapperView
     ---------------
-    contentView
-    -------------
-        leftView
-        -----------
-            sessionView
-            ---------
-            title
-            ---------
-            button
+        contentView
         -------------
-        rightView
-        ---------
-            airImageView
+            leftView
+            -----------
+                sessionView
+                ---------
+                title
+                ---------
+                button
+            -------------
+            rightView
+            ---------
+                airImageView
 */
 
 
 import Foundation
 import UIKit
+
+let PHSegueRootIdentifier: String  = "phair_root"
 
 @objc protocol AirbnbMenuDelegate: NSObjectProtocol {
     optional func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool
@@ -53,14 +55,24 @@ import UIKit
 
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource , UIGestureRecognizerDelegate {
     
-    let titleNormalColor: UIColor?
-    let titleHighlightColor: UIColor?
+    var titleNormalColor: UIColor?
+    var titleHighlightColor: UIColor?
     var delegate: AirbnbMenuDelegate?
     var dataSource: AirbnbMenuDataSource?
     var fontViewController: UIViewController?
     var currentIndexPath: NSIndexPath?
     
     let comlete = ({ () -> Void in })
+   
+    var wrapperView: UIView?
+    var contentView: UIView?
+    var leftView: UIView?
+    var rightView: UIView?
+    var airImageView: UIView?
+    
+    var lastDeegreesRotateTransform: CGFloat?
+    
+    var panGestureRecognizer: UIPanGestureRecognizer?
     
     // number of data
     var session: Int?
@@ -78,7 +90,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var middleSession: AirbnbSessionView?
     var bottomSession: AirbnbSessionView?
     
-    var lastIndexInSession: Dictionary<Int, UIView>?
+    var lastIndexInSession: Dictionary<Int, AirbnbSessionView>?
     var thumbnailImages: [UIImage]?
     var viewControllers: [UIViewController]?
     var heightAirMenuRow: CGFloat?
@@ -104,6 +116,68 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             self.edgesForExtendedLayout = UIRectEdge.None
         }
         
+        // Init sessionViews
+        self.sessionViews = Dictionary<Int, AirbnbSessionView>()
+        self.currentIndexSession = 0
+        
+        self.lastIndexInSession = Dictionary<Int, AirbnbSessionView>()
+        //self.lastIndexInSession[0] = nil
+        self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
+        
+        self.delegate = self
+        self.dataSource = self
+        
+        // Init contentView
+        self.view.addSubview(self.wrapperView!)
+        self.wrapperView?.addSubview(self.contentView!)
+        
+        // Init left/rightView
+        self.contentView?.addSubview(self.leftView!)
+        self.contentView?.addSubview(self.rightView!)
+        
+        // Init airImageView
+        self.rightView?.addSubview(self.airImageView!)
+        
+        // Setting color
+        self.titleNormalColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+        self.titleHighlightColor = UIColor.blackColor()
+        
+        if let st = self.storyboard {
+            self.performSegueWithIdentifier(PHSegueRootIdentifier, sender: nil)
+        }
+        
+        let swipe: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleSwipeOnAirImageView:")
+        swipe.direction = UISwipeGestureRecognizerDirection.Left
+        self.airImageView?.addGestureRecognizer(swipe)
+        
+        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handleRevealGesture:")
+        self.panGestureRecognizer?.delegate = self
+        self.leftView?.addGestureRecognizer(self.panGestureRecognizer!)
+        
+        // Setup animation
+        self.setupAnimation()
+        
+        self.leftView?.alpha = 0
+        self.rightView?.alpha = 0
+        
+        // Default height row value
+        self.heightAirMenuRow = 44
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.reloadData()
+    }
+    
+    func bringViewControllerToTop(controller: UIViewController, indexPath: NSIndexPath) {
+        if (controller == nil) {
+            return
+        }
+        
+        
+    }
+    
+    func setupAnimation() {
         
     }
     
