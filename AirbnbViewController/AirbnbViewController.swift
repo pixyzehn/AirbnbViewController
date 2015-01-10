@@ -32,8 +32,6 @@ view
 import Foundation
 import UIKit
 
-let PHSegueRootIdentifier: String  = "phair_root"
-
 @objc protocol AirbnbMenuDelegate: NSObjectProtocol {
     optional func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool
     optional func didSelectRowAtIndex(indexPath: NSIndexPath)
@@ -53,26 +51,56 @@ let PHSegueRootIdentifier: String  = "phair_root"
     optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
 }
 
+let kMenuItemHeight = 80
+let kSessionWidth = 220
+
+let kLeftViewTransX = -50
+let kLeftViewRotate = -5
+let kAirImageViewRotate = -25
+let kRightViewTransX = 180
+let kRightViewTransZ = -150
+
+let kAirImageViewRotateMax = -42
+
+let kDuration = 0.2
+
+let kIndexPathOutMenu = NSIndexPath(forRow: 999, inSection: 0)
+
+var AirDegreesToRadians = {(degrees: CGFloat) -> CGFloat in
+    
+    return degrees * CGFloat(M_PI) / 180.0
+}
+
+var AirRadiansToDegrees = {(radians: CGFloat) -> CGFloat in
+    return radians * 180 / CGFloat(M_PI)
+}
+
+let PHSegueRootIdentifier = "phair_root"
+
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource , UIGestureRecognizerDelegate {
     
     var titleNormalColor: UIColor?
     var titleHighlightColor: UIColor?
+    
     var delegate: AirbnbMenuDelegate?
     var dataSource: AirbnbMenuDataSource?
+    
     var fontViewController: UIViewController?
     var currentIndexPath: NSIndexPath?
     
     let comlete = ({ () -> Void in })
    
-    var wrapperView: UIView?
-    var contentView: UIView?
-    var leftView: UIView?
-    var rightView: UIView?
-    var airImageView: UIView?
+    // private property
     
-    var lastDeegreesRotateTransform: CGFloat?
+    private var wrapperView: UIView?
+    private var contentView: UIView?
+    private var leftView: UIView?
+    private var rightView: UIView?
+    private var airImageView: UIView?
     
-    var panGestureRecognizer: UIPanGestureRecognizer?
+    private var lastDeegreesRotateTransform: CGFloat?
+    
+    private var panGestureRecognizer: UIPanGestureRecognizer?
     
     // number of data
     var session: Int?
@@ -91,7 +119,21 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var bottomSession: AirbnbSessionView?
     
     var lastIndexInSession: Dictionary<Int, AirbnbSessionView>?
+    /* [ // session 0
+    {0 : thumbnail image 0,1 : thumbnail image 1},
+    // session 1
+    {0 : thumbnail image 0,1 : thumbnail image 1},
+    ]
+    */
+
     var thumbnailImages: [UIImage]?
+    /* [ // session 0
+    {0 : view controller 0,1 : view controller 1},
+    // session 1
+    {0 : view controller 0,1 : view controller 1},
+    ]
+    */
+
     var viewControllers: [UIViewController]?
     var heightAirMenuRow: CGFloat?
     
@@ -169,21 +211,113 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.reloadData()
     }
     
-    func bringViewControllerToTop(controller: UIViewController, indexPath: NSIndexPath) {
+    func bringViewControllerToTop(controller: UIViewController?, indexPath: NSIndexPath?) {
         if (controller == nil) {
             return
         }
         
+        self.fontViewController?.removeFromParentViewController()
+        self.fontViewController?.view.removeFromSuperview()
+        
+        self.fontViewController = controller
+        self.currentIndexPath = indexPath
+        
+        if (indexPath? != nil && indexPath?.row != kIndexPathOutMenu.row) {
+            //self.lastIndexInSession[indexPath?.section] = indexPath?.row
+            
+            
+        }
+    }
+    
+    // storyboard support
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
     }
     
-    func setupAnimation() {
+    // ContentView
+    
+    func contentViewDidTap(recognizer: UITapGestureRecognizer) {
         
     }
+    
+    // Gesture Delegate
+
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    // AirImageView gesture
+    
+    func handleSwipeOnAirImageView(swipe: UISwipeGestureRecognizer) {
+        
+    }
+    
+    func handleTapOnAirImageView(swipe: UISwipeGestureRecognizer) {
+        
+    }
+    
+    // Gesture Based Reveal
+    
+    func handleRevealGesture(recognizer: UIPanGestureRecognizer) {
+        
+    }
+    
+    func handleRevealGestureStateBeganWithRecognizer(recognizer: UIPanGestureRecognizer) {
+        
+    }
+    
+    func handleRevealGestureStateChangedWithRecognizer(recognizer: UIPanGestureRecognizer) {
+        
+    }
+    
+    func handleRevealGestureStateEndedWithRecognizer(recognizer: UIPanGestureRecognizer) {
+        
+    }
+    
+    func handleRevealGestureStateCancelledWithRecognizer(recognizer: UIPanGestureRecognizer) {
+        
+    }
+    
+    //
+    
+    func nextSession() {
+        
+    }
+    
+    func prevSession() {
+        
+    }
+    
+    func slideCurrentSession() {
+        
+    }
+    
+    func rotateAirImage() {
+        
+    }
+    
+    // layout menu
     
     func reloadData() {
         
     }
+    
+    func layoutContaintView() {
+        
+    }
+    
+    func updateButtonColor() {
+        
+    }
+    
+    // PHAirMenuDelegate
+    
+    // Button action
+    
+    // property
+    
+    // Show/Hide air view controller
     
     func showAirViewFromViewController(controller: UIViewController, complete: () -> Void ) {
         
@@ -196,6 +330,17 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     func switchToViewController(controller: UIViewController) {
         
     }
+    
+    func hideAirViewOnComplete(complete: () -> Void) {
+        
+    }
+
+    // animation
+    
+    func setupAnimation() {
+        
+    }
+    
     
     // AirbnbMenuDelegate
     
@@ -250,5 +395,7 @@ extension UIViewController {
 // AirbnbViewControllerSegue
 
 class PHAirViewControllerSegue: UIStoryboardSegue {
-    
+    var peformHandler = {(segue: PHAirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
+        
+    }
 }
