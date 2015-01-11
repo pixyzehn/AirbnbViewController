@@ -67,7 +67,6 @@ let kDuration = 0.2
 let kIndexPathOutMenu = NSIndexPath(forRow: 999, inSection: 0)
 
 var AirDegreesToRadians = {(degrees: CGFloat) -> CGFloat in
-    
     return degrees * CGFloat(M_PI) / 180.0
 }
 
@@ -313,9 +312,39 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     // PHAirMenuDelegate
     
+    func numberOfSession() -> Int {
+        
+        return 2
+    }
+    
+    func numberOfRowsInSession(sesion: Int) -> Int {
+        
+        return 2
+    }
+    
+    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
+        
+        return "hoge"
+    }
+    
+    func titleForHeaderAtSession(session: Int) -> String {
+        
+        return "hoge"
+    }
+    
     // Button action
     
+    func sessionButtonTouch(buttton: UIButton) {
+        
+    }
+    
+    func rowDidTouch(button: UIButton) {
+        
+    }
+    
     // property
+    
+    // getter, setter
     
     // Show/Hide air view controller
     
@@ -341,61 +370,71 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
     }
     
+    // Helper
     
-    // AirbnbMenuDelegate
-    
-    func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
+    func getThumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
         
-        return true
+        return nil
     }
     
-    func didSelectRowAtIndex(indexPath: NSIndexPath) {
+    func saveThumbnailImage(image: UIImage, atIndexPath indexPath: NSIndexPath) {
         
     }
     
-    // AirbnbMenuDataSource
-    
-    func numberOfSession() -> Int {
-        
-        return 2
+    func getViewControllerAtIndexPath(indexPath: NSIndexPath) -> UIViewController? {
+        return nil
     }
     
-    func numberOfRowsInSession(sesion: Int) -> Int {
+    func saveViewControler(controller: UIViewController, atIndexPath indexPath: NSIndexPath) {
         
-        return 2
     }
     
-    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
-        
-        return "hoge"
+    func imageWithView(image: UIImage) -> UIImage? {
+        return nil
     }
     
-    func titleForHeaderAtSession(session: Int) -> String {
-        
-        return "hoge"
+    func duplicate(image: UIImage) -> UIImage? {
+        return nil
     }
     
+    deinit {
+        
+    }
 }
+
+let SwipeTagHandle = "SWIPE_HANDER"
+let SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
-    /*
-    var airbnbViewSwipeGestureRecognizer: UISwipeGestureRecognizer {
-        return
-    }
-    var aribnbViewSwipeHander {
-        return ({ () -> Void in })
+    
+    func phSwipeGestureRecognizer() -> UISwipeGestureRecognizer? {
+        return nil
     }
     
-    func airViewController() -> AirbnbViewController {
-
+    func setPhSwipeHander(() -> Void) {
+        
     }
-    */
+    
+    func phSwipeHander() -> (() -> Void)? {
+        return nil
+    }
+    
+    func swipeHanle() {
+        
+    }
+    
+    func airViewController() -> AirbnbViewController? {
+        return nil
+    }
+    
 }
 
-// AirbnbViewControllerSegue
+    // AirViewControllerSegue Class
 
 class PHAirViewControllerSegue: UIStoryboardSegue {
+    
     var peformHandler = {(segue: PHAirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
         
     }
+    
 }
