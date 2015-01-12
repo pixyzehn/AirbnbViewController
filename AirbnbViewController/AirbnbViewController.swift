@@ -39,7 +39,7 @@ import UIKit
     optional func willHideAirViewController()
     optional func didHideAirViewController()
     optional func heightForAirMenuRow() -> Float
-    optional func indexPathDefaultValue(indexPath: NSIndexPath)
+    optional func indexPathDefaultValue() -> NSIndexPath?
 }
 
 @objc protocol AirbnbMenuDataSource: NSObjectProtocol {
@@ -117,7 +117,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var middleSession: AirbnbSessionView?
     var bottomSession: AirbnbSessionView?
     
-    var lastIndexInSession: Dictionary<Int, AirbnbSessionView>?
+    var lastIndexInSession: Dictionary<Int, Int>?
     /* [ // session 0
     {0 : thumbnail image 0,1 : thumbnail image 1},
     // session 1
@@ -161,7 +161,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.sessionViews = Dictionary<Int, AirbnbSessionView>()
         self.currentIndexSession = 0
         
-        self.lastIndexInSession = Dictionary<Int, AirbnbSessionView>()
+        self.lastIndexInSession = Dictionary<Int, Int>()
         //self.lastIndexInSession[0] = nil
         self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
@@ -223,43 +223,88 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         if (indexPath? != nil && indexPath?.row != kIndexPathOutMenu.row) {
             //self.lastIndexInSession[indexPath?.section] = indexPath?.row
-            
-            
+            self.saveViewControler(controller!, atIndexPath: indexPath!)
         }
+        
+        self.addChildViewController(self.fontViewController!)
+        let controllerView: UIView = self.fontViewController!.view
+        controllerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        controllerView.frame = self.view.bounds
+        self.view.addSubview(controllerView)
+        self.fontViewController?.didMoveToParentViewController(self)
     }
     
     // storyboard support
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
+        if segue is AirViewControllerSegue && sender? == nil {
+            var nextIndexPath: NSIndexPath = self.currentIndexPath!
+            if segue?.identifier == PHSegueRootIdentifier {
+                if self.delegate != nil && self.delegate?.respondsToSelector("indexPathDefaultValue") != nil {
+                    //nextIndexPath = self.delegate.indexPathDefaultValue()??
+                }
+            }
+            var segu: AirViewControllerSegue = segue? as AirViewControllerSegue
+            segu.peformHandler = {(rvc_segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
+                self.bringViewControllerToTop(dvc, indexPath: nextIndexPath)
+            }
+        }
     }
     
     // ContentView
     
     func contentViewDidTap(recognizer: UITapGestureRecognizer) {
-        
+        if self.airImageView?.tag == 1 {
+            
+        }
     }
     
     // Gesture Delegate
 
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if isAnimation == false {
+            return false
+        }
         return true
     }
     
     // AirImageView gesture
     
     func handleSwipeOnAirImageView(swipe: UISwipeGestureRecognizer) {
-        
+        self.hideAirViewOnComplete({() -> Void in
+            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath)
+        })
     }
     
     func handleTapOnAirImageView(swipe: UISwipeGestureRecognizer) {
-        
+        self.hideAirViewOnComplete({() -> Void in
+            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath)
+        })
     }
     
     // Gesture Based Reveal
     
     func handleRevealGesture(recognizer: UIPanGestureRecognizer) {
+        if self.sessionViews?.count == 0 && self.sessionViews?.count == 1 {
+            return
+        }
         
+        switch recognizer.state {
+        case UIGestureRecognizerState.Began:
+            self.handleRevealGestureStateBeganWithRecognizer(recognizer)
+            break
+        case UIGestureRecognizerState.Changed:
+            self.handleRevealGestureStateChangedWithRecognizer(recognizer)
+            break
+        case UIGestureRecognizerState.Ended:
+            self.handleRevealGestureStateEndedWithRecognizer(recognizer)
+            break
+        case UIGestureRecognizerState.Cancelled:
+            self.handleRevealGestureStateCancelledWithRecognizer(recognizer)
+            break
+        default:
+            break
+        }
     }
     
     func handleRevealGestureStateBeganWithRecognizer(recognizer: UIPanGestureRecognizer) {
@@ -267,7 +312,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     func handleRevealGestureStateChangedWithRecognizer(recognizer: UIPanGestureRecognizer) {
-        
+        let translation: CGFloat = recognizer.translationInView(self.leftView!).y
+        //self.leftView!.top =
     }
     
     func handleRevealGestureStateEndedWithRecognizer(recognizer: UIPanGestureRecognizer) {
@@ -402,6 +448,17 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
 }
 
+// AirViewControllerSegue Class
+
+class AirViewControllerSegue: UIStoryboardSegue {
+    
+    var peformHandler = {(segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
+        
+    }
+}
+
+    // EXtension UIViewController
+
 let SwipeTagHandle = "SWIPE_HANDER"
 let SwipeObject = "SWIPE_OBJECT"
 
@@ -428,13 +485,182 @@ extension UIViewController {
     }
     
 }
+    // EXtension UIView
 
-    // AirViewControllerSegue Class
-
-class PHAirViewControllerSegue: UIStoryboardSegue {
+extension UIView {
     
-    var peformHandler = {(segue: PHAirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
-        
+    var left: CGFloat {
+        get {
+            return self.frame.origin.x
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.x = newValue
+            self.frame = frame
+        }
     }
     
+    var top: CGFloat {
+        get {
+            return self.frame.origin.y
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.y = newValue
+            self.frame = frame
+        }
+    }
+    
+    var right: CGFloat {
+        get {
+            return self.frame.origin.x + self.frame.size.width
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.x = newValue - frame.size.width
+            self.frame = frame
+        }
+    }
+    
+    var bottom: CGFloat {
+        get {
+            return self.frame.origin.y + self.frame.size.height;
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin.y = bottom - frame.size.height
+            self.frame = frame
+        }
+    }
+    
+    var centerX: CGFloat {
+        get {
+            return self.center.x
+        }
+        set {
+            self.center = CGPointMake(newValue, self.center.y)
+        }
+    }
+    
+    var centerY: CGFloat {
+        get {
+            return self.center.y
+        }
+        set {
+            self.center = CGPointMake(self.center.x, newValue)
+        }
+    }
+    
+    var width: CGFloat {
+        get {
+            return self.frame.size.width
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.size.width = newValue
+            self.frame = frame
+        }
+    }
+    
+    var height: CGFloat {
+        get {
+            return self.frame.size.height
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.size.height = newValue
+            self.frame = frame
+        }
+    }
+    
+    var ttScreenX: CGFloat {
+        get {
+            var x: CGFloat = 0
+            var view: UIView? = self
+            for (view; view? == nil; view?.superview) {
+               x += view!.left
+            }
+            return x
+        }
+    }
+    
+    var ttScreenY: CGFloat {
+        get {
+            var y: CGFloat = 0
+            var view: UIView? = self
+            for (view; view? == nil; view?.superview) {
+                y += view!.top
+            }
+            return y
+        }
+    }
+    
+    var screenViewX: CGFloat {
+        get {
+            var x: CGFloat = 0
+            var view: UIView? = self
+            for (view; view? == nil; view?.superview) {
+                x += view!.left
+                if view!.isKindOfClass(UIScrollView) {
+                    var scrollView: UIScrollView = view as UIScrollView
+                    x -= scrollView.contentOffset.x
+                }
+            }
+            return x
+        }
+    }
+    
+    var screenViewY: CGFloat {
+        get {
+            var y: CGFloat = 0
+            var view: UIView? = self
+            for (view; view? == nil; view?.superview) {
+                y += view!.top
+                if view!.isKindOfClass(UIScrollView) {
+                    var scrollView: UIScrollView = view as UIScrollView
+                    y -= scrollView.contentOffset.y
+                }
+            }
+            return y
+        }
+    }
+    
+    var screenFrame: CGRect {
+        get {
+            return CGRectMake(self.screenViewX, self.screenViewY, self.width, self.height);
+        }
+    }
+    
+    var origin: CGPoint {
+        get {
+            return self.frame.origin
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.origin = newValue
+            self.frame = frame
+        }
+    }
+    
+    var size: CGSize {
+        get {
+            return self.frame.size
+        }
+        set {
+            var frame: CGRect = self.frame
+            frame.size = newValue
+            self.frame = frame
+        }
+    }
+    
+    var allSubviews: NSArray {
+        get {
+            var arr: NSMutableArray = []
+            arr.addObject(self)
+            for subView in self.subviews {
+                arr.addObjectsFromArray(subView.allSubviews)
+            }
+            return arr
+        }
+    }
 }
