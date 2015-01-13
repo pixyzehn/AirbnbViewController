@@ -66,6 +66,8 @@ let kDuration = 0.2
 
 let kIndexPathOutMenu = NSIndexPath(forRow: 999, inSection: 0)
 
+let kHeaderTitleHeight: CGFloat = 80
+
 var AirDegreesToRadians = {(degrees: CGFloat) -> CGFloat in
     return degrees * CGFloat(M_PI) / 180.0
 }
@@ -313,11 +315,65 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     func handleRevealGestureStateChangedWithRecognizer(recognizer: UIPanGestureRecognizer) {
         let translation: CGFloat = recognizer.translationInView(self.leftView!).y
-        //self.leftView!.top =
+        self.leftView!.top = -(self.view.height - kHeaderTitleHeight) + translation
+        
+        let firstTop: Int = -Int(self.view.height - kHeaderTitleHeight)
+        let afterTop: Int = Int(self.leftView!.top)
+        
+        let sessionViewHeight: Int = Int(self.view.height - kHeaderTitleHeight)
+        var distanceScroll: Int = 0
+        
+        if afterTop - firstTop > 0 {
+            let topMiddleSessionView: Int = Int(self.leftView!.top) + sessionViewHeight + 40
+            if topMiddleSessionView < Int(self.view.height/2) {
+                distanceScroll = Int(self.view.height/2) - topMiddleSessionView
+                
+            } else {
+                distanceScroll = topMiddleSessionView - Int(self.view.height/2) + 40
+            }
+        } else {
+            let bottomMiddleSessionView: Int = Int(self.leftView!.top) + sessionViewHeight*2
+            if bottomMiddleSessionView > Int(self.view.height/2) {
+                distanceScroll = bottomMiddleSessionView - Int(self.view.height/2)
+            } else {
+                distanceScroll = Int(self.view.height/2) - bottomMiddleSessionView
+            }
+        }
+        
+        distanceScroll = abs(Int(self.view.height/2) - distanceScroll)
+        
+        let rotateDegress: CGFloat = CGFloat(distanceScroll * abs(kAirImageViewRotateMax - kAirImageViewRotate))/(self.view.height/2)
+        self.lastDeegreesRotateTransform = rotateDegress
+        var airImageRotate: CATransform3D = CATransform3DIdentity
+        airImageRotate = CATransform3DRotate(airImageRotate, AirDegreesToRadians(CGFloat(kAirImageViewRotate)-rotateDegress), 0, 1, 0)
+        
+        self.airImageView?.layer.transform = airImageRotate
     }
     
     func handleRevealGestureStateEndedWithRecognizer(recognizer: UIPanGestureRecognizer) {
         
+        if sessionViews?.count == 0 {
+            return
+        }
+        
+        let firstTop: Int = -Int(self.view.height - kHeaderTitleHeight)
+        let afterTop: Int = Int(self.leftView!.top)
+        
+        let velocity: CGPoint = recognizer.velocityInView(recognizer.view)
+        
+        if afterTop - firstTop > 0 {
+            if afterTop - firstTop > Int(self.view.height/2) - 40 || abs(velocity.y) > 100 {
+                self.prevSession()
+            } else {
+                self.slideCurrentSession()
+            }
+        } else {
+            if firstTop - afterTop > Int(self.view.height/2) - 40 || abs(velocity.y) > 100 {
+                self.nextSession()
+            } else {
+                self.slideCurrentSession()
+            }
+        }
     }
     
     func handleRevealGestureStateCancelledWithRecognizer(recognizer: UIPanGestureRecognizer) {
