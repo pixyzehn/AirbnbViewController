@@ -398,20 +398,85 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
-                //self?.leftView?.top = -(self?.leftView!.height/3.0)*2
+                self?.leftView?.top = -(self!.leftView!.height / CGFloat(3.0))*2.0
+                return
             }, completion: {(finished: Bool) -> Void in
+                self.layoutContaintView()
         })
+        
+        self.rotateAirImage()
     }
     
     func prevSession() {
+        self.currentIndexSession!++
+        if self.currentIndexSession < 0 {
+            self.currentIndexSession = self.sessionViews!.count - 1
+        }
         
+        // Get thumbnailImage
+        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+
+        
+        let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)!
+        if let prev = prevThumbnail {
+            self.airImageView?.image = prevThumbnail
+        }
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+            self?.leftView?.top = 0
+            return
+            }, completion: {(finished: Bool) -> Void in
+                self.layoutContaintView()
+        })
+        
+        self.rotateAirImage()
     }
     
     func slideCurrentSession() {
         
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+            self?.leftView?.top = -self!.leftView!.height/3
+            return
+            }, completion: {(finished: Bool) -> Void in
+                self.layoutContaintView()
+        })
     }
     
     func rotateAirImage() {
+        
+        if self.lastDeegreesRotateTransform > 0 {
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+                
+                var airImageRotate: CATransform3D = self!.airImageView!.layer.transform
+                airImageRotate = CATransform3DRotate(airImageRotate, CGFloat(AirDegreesToRadians(self!.lastDeegreesRotateTransform!)),0,1,0)
+                self?.airImageView?.layer.transform = airImageRotate
+                
+                return
+                }, completion: {(finished: Bool) -> Void in
+                    self.lastDeegreesRotateTransform = 0
+            })
+        } else {
+            
+            let rotateDegress: CGFloat = abs(CGFloat(kAirImageViewRotateMax) - CGFloat(kAirImageViewRotate)) as CGFloat
+            
+            UIView.animateWithDuration(0.15, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+                
+                    var airImageRotate: CATransform3D = self!.airImageView!.layer.transform
+                    airImageRotate = CATransform3DRotate(airImageRotate, AirDegreesToRadians(-rotateDegress), 0, 1, 0)
+                    self?.airImageView?.layer.transform = airImageRotate
+                
+                return
+                }, completion: {(finished: Bool) -> Void in
+                    UIView.animateWithDuration(0.15, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+                        var airImageRotate: CATransform3D = self!.airImageView!.layer.transform
+                        airImageRotate = CATransform3DRotate(airImageRotate, AirDegreesToRadians(rotateDegress), 0, 1, 0)
+                        self?.airImageView?.layer.transform = airImageRotate
+                        return
+                        }, completion: {(finished: Bool) -> Void in
+                            self.lastDeegreesRotateTransform = 0
+                    })
+            })
+        }
         
     }
     
