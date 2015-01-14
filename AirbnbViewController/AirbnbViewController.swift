@@ -97,7 +97,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     private var contentView: UIView?
     private var leftView: UIView?
     private var rightView: UIView?
-    private var airImageView: UIView?
+    private var airImageView: UIImageView?
     
     private var lastDeegreesRotateTransform: CGFloat?
     
@@ -384,6 +384,23 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     func nextSession() {
         
+        self.currentIndexSession!++
+        if self.currentIndexSession > self.sessionViews?.count {
+            self.currentIndexSession = 0
+        }
+        
+        // Get thumbnailImage
+        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+        
+        let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)!
+        if let image = nextThumbnail {
+            self.airImageView?.image = image
+        }
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+                //self?.leftView?.top = -(self?.leftView!.height/3.0)*2
+            }, completion: {(finished: Bool) -> Void in
+        })
     }
     
     func prevSession() {
