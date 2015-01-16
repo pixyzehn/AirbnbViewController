@@ -108,7 +108,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var rowsOfSession: [Int]?
     
     // sesion view
-    var sessionViews: Dictionary<Int, UIView>?
+    var sessionViews: Dictionary<Int, AirbnbSessionView>?
     
     // current index sesion view
     var currentIndexSession: Int?
@@ -127,7 +127,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     ]
     */
 
-    var thumbnailImages: [UIImage]?
+    var thumbnailImages: [Dictionary<Int, UIView>]?
     /* [ // session 0
     {0 : view controller 0,1 : view controller 1},
     // session 1
@@ -135,7 +135,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     ]
     */
 
-    var viewControllers: [UIViewController]?
+    var viewControllers: [Dictionary<Int, UIViewController>]?
     var heightAirMenuRow: CGFloat?
     
     override init() {
@@ -484,6 +484,87 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     func reloadData() {
         
+        if self.dataSource == nil {
+            return
+        }
+        
+        // Get number session
+        self.session = self.dataSource?.numberOfSession()
+        
+        // Get height
+        if self.delegate?.respondsToSelector("heightForAirMenuRow") != nil{
+            self.heightAirMenuRow = CGFloat(self.delegate!.heightForAirMenuRow!())
+        }
+        
+        var tempThumbnails: [Dictionary<Int, UIView>] = [Dictionary<Int, UIView>()]
+        var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
+        
+        for (var i:Int=0; i<self.session; i++) {
+            tempThumbnails.append(Dictionary<Int, UIView>())
+            tempViewControllers.append(Dictionary<Int, UIViewController>())
+        }
+        self.thumbnailImages = tempThumbnails
+        self.viewControllers = tempViewControllers
+        
+        // Get number rows of session
+        var temp: Array = [Int]()
+        for (var i:Int = 0; i < self.session; i++) {
+            temp.append(self.dataSource!.numberOfRowsInSession(i))
+        }
+        self.rowsOfSession = temp
+        
+        // Init AirbnbSessionView
+        let sessionHeight: CGFloat = CGFloat(self.view.frame.size.height - kHeaderTitleHeight)
+        for (var i:Int = 0; i < self.session; i++) {
+            var sessionView: AirbnbSessionView? = self.sessionViews![i]!
+            if sessionView == nil {
+                sessionView = AirbnbSessionView(frame:CGRectMake(30, 0, CGFloat(kSessionWidth), sessionHeight))
+                sessionView?.button?.setTitleColor(UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0), forState: UIControlState.Normal)
+                sessionView?.button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 20)
+                sessionView?.button?.tag = i
+                sessionView?.button?.addTarget(self, action: "sessionButtonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
+                self.sessionViews![i] = sessionView!
+            }
+            // Set title for header session
+            if self.dataSource?.respondsToSelector("titleForHeaderAtSession:") != nil {
+                let sesionTitle: String = self.dataSource!.titleForHeaderAtSession(i)
+                sessionView?.button?.setTitle(sesionTitle, forState: UIControlState.Normal)
+            }
+        }
+        
+        // Init menu item for session
+        for (var i:Int = 0; i < self.session; i++) {
+            var sessionView: AirbnbSessionView? = sessionViews![i]!
+            // Remove all sub-view for contain of PHSessionView
+            for view in sessionView!.containView!.subviews {
+                view.removeFromSuperview()
+            }
+            
+            var firstTop: Int = Int(sessionView!.containView!.frame.size.height) - Int(self.rowsOfSession![i])
+
+            if firstTop < 0 {
+                firstTop = 0
+            }
+            
+            for (var j: Int = 0; j < self.rowsOfSession![i]; j++) {
+                let title: String = self.dataSource!.titleForRowAtIndexPath(NSIndexPath(forRow: j, inSection: i))
+                var button: UIButton? = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
+                button!.setTitle(title, forState: UIControlState.Normal)
+                button!.addTarget(self, action: "rowDidTouch:", forControlEvents: UIControlEvents.TouchUpInside)
+                button!.setTitleColor(self.titleNormalColor, forState: UIControlState.Normal)
+                button!.setTitleColor(self.titleHighlightColor, forState: UIControlState.Highlighted)
+                button!.setTitleColor(self.titleHighlightColor, forState: UIControlState.Selected)
+                button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 16)
+                button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+                let y: CGFloat = CGFloat(firstTop) + CGFloat(self.heightAirMenuRow!) * CGFloat(j)
+                button?.frame = CGRectMake(0, y, 200, self.heightAirMenuRow!);
+                button?.tag = j;
+                sessionView!.containView!.tag = i;
+                sessionView?.containView?.addSubview(button!)
+            }
+        }
+        
+        self.layoutContaintView()
     }
     
     func layoutContaintView() {

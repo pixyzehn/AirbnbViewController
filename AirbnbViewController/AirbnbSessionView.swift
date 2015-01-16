@@ -30,10 +30,13 @@ class AirbnbSessionView: UIView {
     required init(coder aDecoder: NSCoder) {
         super.init()
     }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
 
     deinit {
         self.button?.removeFromSuperview()
         self.containView?.removeFromSuperview()
-        
     }
 }
