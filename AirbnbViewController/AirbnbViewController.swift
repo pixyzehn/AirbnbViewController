@@ -568,7 +568,43 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     func layoutContaintView() {
+        if (sessionViews!.count == 1) {
+            middleSession = sessionViews![0]
+            self.topSession = nil
+            self.bottomSession = nil
+            
+            middleSession?.top = middleSession!.height
+            self.leftView?.addSubview(middleSession!)
+            
+            self.leftView?.top = -(self.leftView!.height)/3
+            
+            self.updateButtonColor()
+            return
+        }
         
+        if let ts = self.topSession?.superview {
+            self.topSession?.removeFromSuperview()
+            self.topSession = nil
+        }
+        
+        if let ms = self.middleSession?.superview {
+            self.middleSession?.removeFromSuperview()
+            self.middleSession = nil
+        }
+        
+        if let bs = self.bottomSession?.superview {
+            self.bottomSession?.removeFromSuperview()
+            self.bottomSession = nil
+        }
+        
+        // Init top/middle/bottom session view
+        if sessionViews!.count == 1 {
+            
+        } else if sessionViews!.count == 2 {
+                
+        } else {
+            
+        }
     }
     
     func updateButtonColor() {
