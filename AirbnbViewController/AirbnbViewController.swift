@@ -794,6 +794,34 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     func showAirViewFromViewController(controller: UIViewController, complete: () -> Void ) {
         
+        self.updateButtonColor()
+        if self.delegate != nil && self.delegate?.respondsToSelector("willShowAirViewController") != nil {
+            self.delegate?.willShowAirViewController!()
+        }
+        
+        // Create Image for airImageView
+        self.airImageView?.image = self.imageWithView(controller.view!)
+        
+        // Save thumbnail
+        self.saveThumbnailImage(self.airImageView!.image!, atIndexPath: self.currentIndexPath!)
+        
+        // Save viewController
+        self.saveViewControler(controller, atIndexPath: self.currentIndexPath!)
+        
+        // Fix for touch and pan
+        self.view.bringSubviewToFront(self.wrapperView!)
+        self.contentView?.bringSubviewToFront(self.leftView!)
+        self.contentView?.bringSubviewToFront(self.rightView!)
+        
+        // set identity transform
+        self.airImageView?.layer.transform = CATransform3DIdentity
+        self.contentView?.layer.transform = CATransform3DIdentity
+        
+        var leftTransform: CATransform3D = CATransform3DIdentity
+        leftTransform = CATransform3DTranslate(leftTransform, CGFloat(kLeftViewTransX), 0, 0)
+        leftTransform = CATransform3DRotate(leftTransform, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
+        
+        
     }
     
     func switchToViewController(controller: UIViewController, atIndexPath: NSIndexPath) {
@@ -833,7 +861,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
     }
     
-    func imageWithView(image: UIImage) -> UIImage? {
+    func imageWithView(view: UIView) -> UIImage? {
         return nil
     }
     
