@@ -48,6 +48,7 @@ import UIKit
     func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
     func titleForHeaderAtSession(session: Int) -> String
     optional func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage
+    optional func segueForAtIndexPath(indexPath: NSIndexPath) -> String
     optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
 }
 
@@ -120,21 +121,23 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var bottomSession: AirbnbSessionView?
     
     var lastIndexInSession: Dictionary<Int, Int>?
+    
+    
     /* [ // session 0
     {0 : thumbnail image 0,1 : thumbnail image 1},
     // session 1
     {0 : thumbnail image 0,1 : thumbnail image 1},
     ]
     */
-
     var thumbnailImages: [Dictionary<Int, UIView>]?
+    
+
     /* [ // session 0
     {0 : view controller 0,1 : view controller 1},
     // session 1
     {0 : view controller 0,1 : view controller 1},
     ]
     */
-
     var viewControllers: [Dictionary<Int, UIViewController>]?
     var heightAirMenuRow: CGFloat?
     
@@ -150,7 +153,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.init()
         let rect = UIScreen.mainScreen().applicationFrame
         self.view.frame = CGRectMake(0, 0, rect.width, rect.height)
-
     }
     
     override func viewDidLoad() {
@@ -599,12 +601,45 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Init top/middle/bottom session view
         if sessionViews!.count == 1 {
-            
+            self.middleSession = sessionViews![0]
+            self.topSession = self.duplicate(self.middleSession!)
+            self.bottomSession = self.duplicate(self.middleSession!)
         } else if sessionViews!.count == 2 {
-                
+            self.middleSession = sessionViews![self.currentIndexSession!]
+            if currentIndexSession! == 0 {
+                self.topSession = self.duplicate(self.sessionViews![1]!)
+                self.bottomSession = self.sessionViews![1]!
+            } else {
+                self.topSession = self.duplicate(self.sessionViews![0]!)
+                self.bottomSession = self.sessionViews![0]!
+            }
         } else {
-            
+            self.middleSession = sessionViews![self.currentIndexSession!]
+            if self.currentIndexSession! == 0 {
+                self.topSession = self.sessionViews![self.sessionViews!.count - 1]
+            } else {
+                self.topSession = self.sessionViews![self.currentIndexSession! - 1]
+            }
+            if self.currentIndexSession! + 1 >= self.sessionViews?.count {
+                self.bottomSession = sessionViews![0]
+            } else {
+                self.bottomSession = self.sessionViews![self.currentIndexSession! + 1]
+            }
         }
+        
+        // Pos for top/middle/bottom session
+        self.topSession!.top    = 0;
+        self.middleSession!.top = self.topSession!.bottom;
+        self.bottomSession!.top = self.middleSession!.bottom;
+        
+        // Add top/middle/bottom to content view
+        self.leftView?.addSubview(self.topSession!)
+        self.leftView?.addSubview(self.middleSession!)
+        self.leftView?.addSubview(self.bottomSession!)
+        
+        self.leftView!.top = -(self.leftView!.height)/3
+        
+        self.updateButtonColor()
     }
     
     func updateButtonColor() {
@@ -615,32 +650,77 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     func numberOfSession() -> Int {
         
-        return 2
+        return 0
     }
     
     func numberOfRowsInSession(sesion: Int) -> Int {
         
-        return 2
+        return 0
     }
     
     func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
         
-        return "hoge"
+        return ""
     }
     
     func titleForHeaderAtSession(session: Int) -> String {
         
-        return "hoge"
+        return ""
+    }
+    
+    func segueForAtIndexPath(indexPath: NSIndexPath) -> String {
+        return ""
     }
     
     // Button action
     
     func sessionButtonTouch(buttton: UIButton) {
-        
+        if buttton.tag == self.currentIndexSession! {
+            return
+        } else {
+            self.nextSession()
+        }
     }
     
     func rowDidTouch(button: UIButton) {
+        // Save row touch in session
+        self.lastIndexInSession![self.currentIndexSession!] = button.superview!.tag
         
+        self.currentIndexPath = NSIndexPath(forRow: button.tag, inSection: button.superview!.tag)
+        // Should select ?
+        if self.delegate != nil && self.delegate?.respondsToSelector("didSelectRowAtIndex:") != nil {
+            self.delegate?.didSelectRowAtIndex!(self.currentIndexPath!)
+        }
+        
+        // Get thumbnailImage
+        if let nextThumbnail = self.getThumbnailImageAtIndexPath(self.currentIndexPath!)? {
+            self.airImageView!.image = nextThumbnail
+        }
+        
+        self.hideAirViewOnComplete({() -> Void in
+            let controller: UIViewController? = self.getViewControllerAtIndexPath(self.currentIndexPath!)?
+            if controller != nil {
+                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
+            } else if self.storyboard != nil {
+                
+                if self.dataSource != nil && self.dataSource?.respondsToSelector("segueForRowAtIndexPath:") != nil {
+                    let segue: NSString? = self.dataSource?.segueForAtIndexPath!(self.currentIndexPath!)
+                    if segue?.length != 0 {
+                        self.performSegueWithIdentifier(segue, sender: nil)
+                    }
+                } else {
+                    if self.dataSource != nil && self.dataSource?.respondsToSelector("viewControllerForIndexPath:") != nil {
+                        let controller: UIViewController? = self.dataSource?.viewControllerForIndexPath!(self.currentIndexPath!)
+                        self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
+                    }
+                }
+                
+            } else {
+                let controller: UIViewController! = self.dataSource?.viewControllerForIndexPath!(self.currentIndexPath!)
+                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
+            }
+            
+        })
     }
     
     // property
@@ -694,7 +774,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         return nil
     }
     
-    func duplicate(image: UIImage) -> UIImage? {
+    func duplicate(view: AirbnbSessionView) -> AirbnbSessionView? {
         return nil
     }
     
