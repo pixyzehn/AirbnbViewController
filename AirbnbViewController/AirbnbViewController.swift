@@ -94,11 +94,74 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
    
     // private property
     
-    private var wrapperView: UIView?
-    private var contentView: UIView?
-    private var leftView: UIView?
-    private var rightView: UIView?
-    private var airImageView: UIImageView?
+    var _wrapperView: UIView = UIView(frame: CGRectZero)
+    private var wrapperView: UIView? {
+        get {
+            if self.wrapperView == nil {
+                let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                return view
+            } else {
+                return self.wrapperView
+            }
+        }
+        set {
+            self.wrapperView = newValue!
+        }
+    }
+    private var contentView: UIView? {
+        get {
+            if self.contentView == nil {
+                let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                return view
+            } else {
+                return self.contentView
+            }
+        }
+        set {
+            self.contentView = newValue!
+        }
+    }
+    private var leftView: UIView? {
+        get {
+            if self.leftView == nil {
+                let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                return view
+            } else {
+                return self.leftView
+            }
+        }
+        set {
+            self.leftView = newValue!
+        }
+    }
+    private var rightView: UIView? {
+        get {
+            if self.rightView == nil {
+                let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                view.userInteractionEnabled = true
+                return view
+            } else {
+                return self.rightView
+            }
+        }
+        set {
+            self.rightView = newValue!
+        }
+    }
+    private var airImageView: UIImageView? {
+        get {
+            if self.airImageView == nil {
+                let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.width))
+                imageView.userInteractionEnabled = true
+                return imageView
+            } else {
+                return self.airImageView
+            }
+        }
+        set {
+            self.airImageView = newValue!
+        }
+    }
     
     private var lastDeegreesRotateTransform: CGFloat?
     
