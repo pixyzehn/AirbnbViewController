@@ -204,6 +204,33 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var viewControllers: [Dictionary<Int, UIViewController>]?
     var heightAirMenuRow: CGFloat?
     
+    var phSwipeHander: (() -> Void)? {
+        get {
+            return objc_getAssociatedObject(self, SwipeTagHandle)
+        }
+        set {
+            if let hander = newValue {
+                
+                if self.phSwipeGestureRecognizer()?.view != nil {
+                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+                if self.navigationController? != nil {
+                    self.navigationController?.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                } else {
+                    self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+            } else {
+                
+                if self.phSwipeGestureRecognizer()?.view != nil {
+                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+            }
+        }
+    }
+    
     override init() {
         super.init()
     }
@@ -1041,37 +1068,13 @@ extension UIViewController {
         
         return swipe
     }
-    
-    func setPhSwipeHander(phSwipeHander: (() -> Void)?) {
         
-        if let hander = phSwipeHander {
-            
-            if self.phSwipeGestureRecognizer()?.view != nil {
-                self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
-            }
-            
-            if self.navigationController? != nil {
-                self.navigationController?.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
-            } else {
-                self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
-            }
-            
-        } else {
-            
-            if self.phSwipeGestureRecognizer()?.view != nil {
-                self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
-            }
-            
-        }
-        
-    }
-    
-    func phSwipeHander() -> (AnyObject!)? {
-        return objc_getAssociatedObject(self, SwipeTagHandle)!
-    }
+//    func phSwipeHander() -> (AnyObject!)? {
+//        return objc_getAssociatedObject(self, SwipeTagHandle)!
+//    }
     
     func swipeHanle() {
-        if self.phSwipeHander() != nil {
+        if self.phSwipeHander? != nil {
             self.phSwipeHander()
         }
     }

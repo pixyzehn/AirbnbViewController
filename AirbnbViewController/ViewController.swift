@@ -14,7 +14,18 @@ class ViewController: UIViewController {
        
         self.view.backgroundColor = UIColor.blackColor()
         
+        var button: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        button.frame = CGRectMake(0, 0, 50, 35)
+        button.setTitle("Menu", forState: UIControlState.Normal)
+        button.addTarget(self, action: "leftButtonTouch", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        
+        
     }
-    
+
+    func leftButtonTouch() {
+        //self.airViewController()!.showAirViewFromViewController(self.navigationController, complete: nil)
+    }
     
 }
