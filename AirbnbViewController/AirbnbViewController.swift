@@ -192,7 +192,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     {0 : thumbnail image 0,1 : thumbnail image 1},
     ]
     */
-    var thumbnailImages: [Dictionary<Int, UIView>]?
+    var thumbnailImages: [Dictionary<Int, UIImage>]?
     
 
     /* [ // session 0
@@ -561,11 +561,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             self.heightAirMenuRow = CGFloat(self.delegate!.heightForAirMenuRow!())
         }
         
-        var tempThumbnails: [Dictionary<Int, UIView>] = [Dictionary<Int, UIView>()]
+        var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
         var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
         
         for (var i:Int=0; i<self.session; i++) {
-            tempThumbnails.append(Dictionary<Int, UIView>())
+            tempThumbnails.append(Dictionary<Int, UIImage>())
             tempViewControllers.append(Dictionary<Int, UIViewController>())
         }
         self.thumbnailImages = tempThumbnails
@@ -861,44 +861,154 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             self.delegate?.willShowAirViewController!()
         }
         
-        
+        UIView.animateWithDuration(kDuration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+            
+            self?.leftView?.alpha = 0
+            var airImageRotate: CATransform3D? = self?.airImageView?.layer.transform
+            airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(-CGFloat(kAirImageViewRotate)), 0, 1, 0)
+            self?.airImageView?.layer.transform = airImageRotate!
+            
+            var rightTransform: CATransform3D? = self?.rightView?.layer.transform
+            rightTransform = CATransform3DTranslate(rightTransform!, -CGFloat(kRightViewTransX), 0, -CGFloat(kRightViewTransZ))
+            self?.rightView?.layer.transform = airImageRotate!
+            
+            var leftTransform: CATransform3D? = self?.leftView?.layer.transform
+            leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
+            leftTransform = CATransform3DTranslate(leftTransform!, CGFloat(kLeftViewTransX), 0, 0)
+            self?.leftView?.layer.transform = airImageRotate!
+            
+            return
+            }, completion: {(finished: Bool) -> Void in
+                self.leftView?.alpha = 0
+                self.rightView?.alpha = 0
+                
+                self.leftView?.layer.transform = CATransform3DIdentity
+                
+                if self.delegate != nil && self.delegate?.respondsToSelector("didHideAirViewController") != nil {
+                    self.delegate?.didHideAirViewController!()
+                }
+        })
+
+        self.airImageView?.tag = 0
     }
 
     // animation
     
     func setupAnimation() {
+        // Setup airImageView to transform
+        var rotationAndPerspectiveTransform: CATransform3D = CATransform3DIdentity
+        rotationAndPerspectiveTransform.m34 = 1.0 / -600
+        self.rightView?.layer.sublayerTransform = rotationAndPerspectiveTransform
+        let anchorPoint: CGPoint = CGPointMake(1, 0.5)
+        let newX: CGFloat = self.airImageView!.width * anchorPoint.x
+        let newY: CGFloat = self.airImageView!.height * anchorPoint.y
+        self.airImageView?.layer.position = CGPointMake(newX, newY)
+        self.airImageView?.layer.anchorPoint = anchorPoint
         
+        // Setup rightView to transform
+        var rotationAndPerspectiveTransform2: CATransform3D = CATransform3DIdentity
+        rotationAndPerspectiveTransform2.m34 = 1.0 / -600
+        self.rightView?.layer.sublayerTransform = rotationAndPerspectiveTransform2
+        let anchorPoint2: CGPoint = CGPointMake(1, 0.5)
+        let newX2: CGFloat = self.airImageView!.width * anchorPoint2.x
+        let newY2: CGFloat = self.airImageView!.height * anchorPoint2.y
+        self.airImageView?.layer.position = CGPointMake(newX2, newY2)
+        self.airImageView?.layer.anchorPoint = anchorPoint2
+        
+        // Setup leftView to transform
+        let leftAnchorPoint: CGPoint = CGPointMake(-3, 0.5)
+        let newLeftX: CGFloat = self.leftView!.width * leftAnchorPoint.x
+        let newLeftY: CGFloat = self.leftView!.height * leftAnchorPoint.y
+        self.leftView?.layer.position = CGPointMake(newLeftX, newLeftY)
+        self.leftView?.layer.anchorPoint = leftAnchorPoint
+        
+        // Setup contentView to transform
+        
+        let anchorPoint3: CGPoint = CGPointMake(-1, 0.5)
+        let newX3: CGFloat = self.contentView!.width * anchorPoint3.y
+        let newY3: CGFloat = self.contentView!.height * anchorPoint3.x
+        self.leftView?.layer.position = CGPointMake(newX3, newY3)
+        self.leftView?.layer.anchorPoint = anchorPoint3
     }
     
     // Helper
     
     func getThumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
         
+        let thumbnailDic: Dictionary = self.thumbnailImages![indexPath.section]
+        if let tDic = thumbnailDic[indexPath.row] {
+            return tDic
+        } else {
+            if self.dataSource!.respondsToSelector("thumbnailImageAtIndexPath:") {
+                return self.dataSource?.thumbnailImageAtIndexPath!(indexPath)
+            }
+        }
+        
         return nil
     }
     
-    func saveThumbnailImage(image: UIImage, atIndexPath indexPath: NSIndexPath) {
+    func saveThumbnailImage(image: UIImage?, atIndexPath indexPath: NSIndexPath) {
         
+        if image? == nil {
+            return
+        }
+        
+        var thumbnailDic: Dictionary = self.thumbnailImages![indexPath.section]
+        thumbnailDic[indexPath.row] = image!
     }
     
     func getViewControllerAtIndexPath(indexPath: NSIndexPath) -> UIViewController? {
+        
+        let viewControllerDic: Dictionary = self.viewControllers![indexPath.section]
+        if let vDic = viewControllerDic[indexPath.row] {
+            return vDic
+        } else {
+            if self.dataSource!.respondsToSelector("viewControllerForIndexPath:") {
+                return self.dataSource?.viewControllerForIndexPath!(indexPath)
+            }
+        }
+        
         return nil
     }
     
-    func saveViewControler(controller: UIViewController, atIndexPath indexPath: NSIndexPath) {
+    func saveViewControler(controller: UIViewController?, atIndexPath indexPath: NSIndexPath) {
+        
+        if controller == nil {
+            return
+        }
+        
+        var viewControllerDic: Dictionary = self.viewControllers![indexPath.section]
+        viewControllerDic[indexPath.row] = controller
         
     }
     
     func imageWithView(view: UIView) -> UIImage? {
-        return nil
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0.0)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let img: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img
     }
     
     func duplicate(view: AirbnbSessionView) -> AirbnbSessionView? {
-        return nil
+        let tempArchive: NSData = NSKeyedArchiver.archivedDataWithRootObject(view)
+        return NSKeyedUnarchiver.unarchiveObjectWithData(tempArchive) as? AirbnbSessionView
     }
     
     deinit {
+        self.airImageView?.removeFromSuperview()
+        self.airImageView = nil
         
+        self.rightView?.removeFromSuperview()
+        self.rightView = nil
+        
+        self.leftView?.removeFromSuperview()
+        self.leftView = nil
+        
+        self.wrapperView?.removeFromSuperview()
+        self.wrapperView = nil
+        
+        self.rowsOfSession = nil
     }
 }
 
@@ -919,23 +1029,60 @@ let SwipeObject = "SWIPE_OBJECT"
 extension UIViewController {
     
     func phSwipeGestureRecognizer() -> UISwipeGestureRecognizer? {
-        return nil
+        
+        var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
+        if let sw = swipe {
+            
+        } else {
+            swipe = UISwipeGestureRecognizer(target: self, action: "swipeHanle")
+            swipe?.direction = UISwipeGestureRecognizerDirection.Right
+            objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+        }
+        
+        return swipe
     }
     
-    func setPhSwipeHander(() -> Void) {
+    func setPhSwipeHander(phSwipeHander: (() -> Void)?) {
+        
+        if let hander = phSwipeHander {
+            
+            if self.phSwipeGestureRecognizer()?.view != nil {
+                self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+            }
+            
+            if self.navigationController? != nil {
+                self.navigationController?.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+            } else {
+                self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+            }
+            
+        } else {
+            
+            if self.phSwipeGestureRecognizer()?.view != nil {
+                self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+            }
+            
+        }
         
     }
     
-    func phSwipeHander() -> (() -> Void)? {
-        return nil
+    func phSwipeHander() -> (AnyObject!)? {
+        return objc_getAssociatedObject(self, SwipeTagHandle)!
     }
     
     func swipeHanle() {
-        
+        if self.phSwipeHander() != nil {
+            self.phSwipeHander()
+        }
     }
     
     func airViewController() -> AirbnbViewController? {
-        return nil
+        
+        let parent: UIViewController = self
+        let revealClass: AnyClass = NSClassFromString("AirbnbViewController")
+        
+        while (nil != parent.parentViewController && !(parent.isKindOfClass(revealClass)) ) {}
+        return parent as? AirbnbViewController
     }
     
 }
