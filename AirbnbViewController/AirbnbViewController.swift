@@ -820,19 +820,47 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         var leftTransform: CATransform3D = CATransform3DIdentity
         leftTransform = CATransform3DTranslate(leftTransform, CGFloat(kLeftViewTransX), 0, 0)
         leftTransform = CATransform3DRotate(leftTransform, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
+        self.leftView?.layer.transform = leftTransform
         
+        self.leftView?.alpha = 0
+        self.rightView?.alpha = 1
         
+        UIView.animateWithDuration(kDuration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
+            
+            self?.leftView?.alpha = 1
+            var airImageRotate: CATransform3D? = self?.airImageView?.layer.transform
+            airImageRotate = CATransform3DTranslate(airImageRotate!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ))
+            self?.airImageView?.layer.transform = airImageRotate!
+            
+            var rightTransform: CATransform3D? = self?.rightView?.layer.transform
+            rightTransform = CATransform3DRotate(rightTransform!, AirDegreesToRadians(CGFloat(kAirImageViewRotate)), 0, 1, 0)
+            self?.rightView?.layer.transform = airImageRotate!
+
+            var leftTransform: CATransform3D? = self?.leftView?.layer.transform
+            leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
+            self?.leftView?.layer.transform = airImageRotate!
+            
+            return
+            }, completion: {(finished: Bool) -> Void in
+                    complete()
+        })
+        
+        self.airImageView?.tag = 1
     }
     
     func switchToViewController(controller: UIViewController, atIndexPath: NSIndexPath) {
-        
+        self.bringViewControllerToTop(controller, indexPath: atIndexPath)
     }
     
     func switchToViewController(controller: UIViewController) {
-        
+        self.bringViewControllerToTop(controller, indexPath: kIndexPathOutMenu)
     }
     
     func hideAirViewOnComplete(complete: () -> Void) {
+        if self.delegate != nil && self.delegate?.respondsToSelector("willHideAirViewController") != nil {
+            self.delegate?.willShowAirViewController!()
+        }
+        
         
     }
 
