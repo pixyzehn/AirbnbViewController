@@ -92,8 +92,8 @@
 			children = (
 				6EA460A31A6BC3DF003A60D4 /* AirbnbViewController */,
 				6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */,
-				6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */,
 				6EE544EF1A6BCA8800D4790F /* ViewController.swift */,
+				6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */,
 				6ECC4AE61A5562DB00D6B47F /* Images.xcassets */,
 				6ECC4AE81A5562DB00D6B47F /* LaunchScreen.xib */,
 				6ECC4ADD1A5562DB00D6B47F /* Supporting Files */,

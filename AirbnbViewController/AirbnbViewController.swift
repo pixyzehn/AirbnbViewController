@@ -81,8 +81,8 @@ let PHSegueRootIdentifier = "phair_root"
 
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
     
-    var titleNormalColor: UIColor?
-    var titleHighlightColor: UIColor?
+    //var titleNormalColor: UIColor?
+    //var titleHighlightColor: UIColor?
     
     var delegate: AirbnbMenuDelegate?
     var dataSource: AirbnbMenuDataSource?
@@ -190,7 +190,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     var lastIndexInSession: Dictionary<Int, Int>?
     
-    
     /* [ // session 0
     {0 : thumbnail image 0,1 : thumbnail image 1},
     // session 1
@@ -199,7 +198,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     */
     var thumbnailImages: [Dictionary<Int, UIImage>]?
     
-
     /* [ // session 0
     {0 : view controller 0,1 : view controller 1},
     // session 1
@@ -214,11 +212,12 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init()
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        // Here you can init your properties
     }
     
     convenience init(viewController: UIViewController, atIndexPath:NSIndexPath) {
@@ -227,7 +226,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.view.frame = CGRectMake(0, 0, rect.width, rect.height)
         self.bringViewControllerToTop(viewController, indexPath: atIndexPath)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if self.edgesForExtendedLayout != UIRectEdge.None {
@@ -239,7 +238,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexSession = 0
         
         self.lastIndexInSession = Dictionary<Int, Int>()
-        //self.lastIndexInSession[0] = nil
+        self.lastIndexInSession![0] = 0
         self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
         self.delegate = self
@@ -257,8 +256,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.rightView?.addSubview(self.airImageView!)
         
         // Setting color
-        self.titleNormalColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
-        self.titleHighlightColor = UIColor.blackColor()
+        //self.titleNormalColor! = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+        //self.titleHighlightColor! = UIColor.blackColor()
         
         if let st = self.storyboard {
             self.performSegueWithIdentifier(PHSegueRootIdentifier, sender: nil)
@@ -299,7 +298,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexPath = indexPath
         
         if (indexPath? != nil && indexPath?.row != kIndexPathOutMenu.row) {
-            //self.lastIndexInSession[indexPath?.section] = indexPath?.row
+            self.lastIndexInSession![indexPath!.section] = indexPath!.row
             self.saveViewControler(controller!, atIndexPath: indexPath!)
         }
         
@@ -315,10 +314,10 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
         if segue is AirViewControllerSegue && sender? == nil {
-            var nextIndexPath: NSIndexPath = self.currentIndexPath!
+            var nextIndexPath: NSIndexPath? = self.currentIndexPath!
             if segue?.identifier == PHSegueRootIdentifier {
                 if self.delegate != nil && self.delegate?.respondsToSelector("indexPathDefaultValue") != nil {
-                    //nextIndexPath = self.delegate.indexPathDefaultValue()??
+                    nextIndexPath = self.delegate!.indexPathDefaultValue!()
                 }
             }
             var segu: AirViewControllerSegue = segue? as AirViewControllerSegue
@@ -568,7 +567,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Get height
         if self.delegate?.respondsToSelector("heightForAirMenuRow") != nil{
-            self.heightAirMenuRow = CGFloat(self.delegate!.heightForAirMenuRow!())
+            //self.heightAirMenuRow = CGFloat(self.delegate!.heightForAirMenuRow!())
         }
         
         var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
@@ -591,7 +590,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         // Init AirbnbSessionView
         let sessionHeight: CGFloat = CGFloat(self.view.frame.size.height - kHeaderTitleHeight)
         for (var i:Int = 0; i < self.session; i++) {
-            var sessionView: AirbnbSessionView? = self.sessionViews![i]!
+            var sessionView: AirbnbSessionView? = self.sessionViews?[i]
             if sessionView == nil {
                 sessionView = AirbnbSessionView(frame:CGRectMake(30, 0, CGFloat(kSessionWidth), sessionHeight))
                 sessionView?.button?.setTitleColor(UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0), forState: UIControlState.Normal)
@@ -626,9 +625,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 var button: UIButton? = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
                 button!.setTitle(title, forState: UIControlState.Normal)
                 button!.addTarget(self, action: "rowDidTouch:", forControlEvents: UIControlEvents.TouchUpInside)
-                button!.setTitleColor(self.titleNormalColor, forState: UIControlState.Normal)
-                button!.setTitleColor(self.titleHighlightColor, forState: UIControlState.Highlighted)
-                button!.setTitleColor(self.titleHighlightColor, forState: UIControlState.Selected)
+                //button!.setTitleColor(self.titleNormalColor, forState: UIControlState.Normal)
+                //button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Highlighted)
+                //button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Selected)
                 button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 16)
                 button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 let y: CGFloat = CGFloat(firstTop) + CGFloat(self.heightAirMenuRow!) * CGFloat(j)
@@ -987,8 +986,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             return
         }
         
-        var viewControllerDic: Dictionary = self.viewControllers![indexPath.section]
-        viewControllerDic[indexPath.row] = controller
+        var viewControllerDic: Dictionary? = self.viewControllers?[indexPath.section]
+        if viewControllerDic != nil {
+            viewControllerDic![indexPath.row] = controller
+        }
+        
     }
     
     func imageWithView(view: UIView) -> UIImage? {
@@ -1083,9 +1085,8 @@ extension UIViewController {
     var airViewController: AirbnbViewController? {
         get {
             let parent: UIViewController = self
-            let revealClass: AnyClass = NSClassFromString("AirbnbViewController")
             
-            while (nil != parent.parentViewController && !(parent.isKindOfClass(revealClass))) {}
+            while (nil != parent.parentViewController && !(parent is AirbnbViewController)) {}
             return parent as? AirbnbViewController
         }
         set {
