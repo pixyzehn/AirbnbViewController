@@ -90,7 +90,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var fontViewController: UIViewController?
     var currentIndexPath: NSIndexPath?
     
-    let comlete = ({ () -> Void in })
+    let complete = ({ () -> Void in })
    
     // private property
     
@@ -204,33 +204,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     var viewControllers: [Dictionary<Int, UIViewController>]?
     var heightAirMenuRow: CGFloat?
     
-    var phSwipeHander: (() -> Void)? {
-        get {
-            return objc_getAssociatedObject(self, SwipeTagHandle)
-        }
-        set {
-            if let hander = newValue {
-                
-                if self.phSwipeGestureRecognizer()?.view != nil {
-                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
-                }
-                
-                if self.navigationController? != nil {
-                    self.navigationController?.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
-                } else {
-                    self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
-                }
-                
-            } else {
-                
-                if self.phSwipeGestureRecognizer()?.view != nil {
-                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
-                }
-                
-            }
-        }
-    }
-    
     override init() {
         super.init()
     }
@@ -339,7 +312,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 }
             }
             var segu: AirViewControllerSegue = segue? as AirViewControllerSegue
-            segu.peformHandler = {(rvc_segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
+            segu.performBlock = {(rvc_segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
                 self.bringViewControllerToTop(dvc, indexPath: nextIndexPath)
             }
         }
@@ -819,7 +792,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     // Show/Hide air view controller
     
-    func showAirViewFromViewController(controller: UIViewController, complete: () -> Void ) {
+    func showAirViewFromViewController(controller: UIViewController?, complete: (() -> Void)? ) {
         
         self.updateButtonColor()
         if self.delegate != nil && self.delegate?.respondsToSelector("willShowAirViewController") != nil {
@@ -827,7 +800,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Create Image for airImageView
-        self.airImageView?.image = self.imageWithView(controller.view!)
+        self.airImageView?.image = self.imageWithView(controller!.view)
         
         // Save thumbnail
         self.saveThumbnailImage(self.airImageView!.image!, atIndexPath: self.currentIndexPath!)
@@ -869,7 +842,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             
             return
             }, completion: {(finished: Bool) -> Void in
-                    complete()
+                    complete!()
         })
         
         self.airImageView?.tag = 1
@@ -1006,7 +979,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         var viewControllerDic: Dictionary = self.viewControllers![indexPath.section]
         viewControllerDic[indexPath.row] = controller
-        
     }
     
     func imageWithView(view: UIView) -> UIImage? {
@@ -1022,6 +994,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         return NSKeyedUnarchiver.unarchiveObjectWithData(tempArchive) as? AirbnbSessionView
     }
     
+    // Clean up
     deinit {
         self.airImageView?.removeFromSuperview()
         self.airImageView = nil
@@ -1039,27 +1012,81 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
 }
 
-// AirViewControllerSegue Class
+/**
+*   AirViewControllerSegue Class
+*/
 
 class AirViewControllerSegue: UIStoryboardSegue {
     
-    var peformHandler = {(segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
-        
+    var performBlock = {(segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
+    }
+    
+    override func perform() {
+        performBlock(self, self.sourceViewController as UIViewController, self.destinationViewController as UIViewController)
     }
 }
 
-    // EXtension UIViewController
+
+/**
+*   EXtension UIViewController
+*/
 
 let SwipeTagHandle = "SWIPE_HANDER"
 let SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
     
+    var phSwipeHandler: (() -> AnyObject?)? {
+        get {
+            var handle = {() -> AnyObject in
+                return objc_getAssociatedObject(self, SwipeTagHandle)
+            }
+            return handle
+        }
+        set {
+            if let hander = newValue {
+                
+                if let view = self.phSwipeGestureRecognizer()?.view {
+                    view.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+                if let nv = self.navigationController? {
+                    nv.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                } else {
+                    self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+            } else {
+                
+                if self.phSwipeGestureRecognizer()?.view != nil {
+                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+                if let ph = self.phSwipeGestureRecognizer()?.view {
+                    ph.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                }
+                
+            }
+        }
+    }
+    
+    var airViewController: AirbnbViewController? {
+        get {
+            let parent: UIViewController = self
+            let revealClass: AnyClass = NSClassFromString("AirbnbViewController")
+            
+            while (nil != parent.parentViewController && !(parent.isKindOfClass(revealClass))) {}
+            return parent as? AirbnbViewController
+        }
+        set {
+            
+        }
+    }
+    
     func phSwipeGestureRecognizer() -> UISwipeGestureRecognizer? {
         
         var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
         if let sw = swipe {
-            
         } else {
             swipe = UISwipeGestureRecognizer(target: self, action: "swipeHanle")
             swipe?.direction = UISwipeGestureRecognizerDirection.Right
@@ -1068,28 +1095,17 @@ extension UIViewController {
         
         return swipe
     }
-        
-//    func phSwipeHander() -> (AnyObject!)? {
-//        return objc_getAssociatedObject(self, SwipeTagHandle)!
-//    }
     
-    func swipeHanle() {
-        if self.phSwipeHander? != nil {
-            self.phSwipeHander()
+    func swipeHandler() {
+        if let handler = self.phSwipeHandler? {
+            handler()
         }
     }
-    
-    func airViewController() -> AirbnbViewController? {
-        
-        let parent: UIViewController = self
-        let revealClass: AnyClass = NSClassFromString("AirbnbViewController")
-        
-        while (nil != parent.parentViewController && !(parent.isKindOfClass(revealClass)) ) {}
-        return parent as? AirbnbViewController
-    }
-    
 }
-    // EXtension UIView
+
+/**
+*   EXtension UIView
+*/
 
 extension UIView {
     

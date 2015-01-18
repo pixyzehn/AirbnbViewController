@@ -9,19 +9,11 @@
 import UIKit
 
 class MenuViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource {
-
-    var data: [[String]]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.yellowColor()
-        
-        let session1: [String] = ["hoge", "fuga"]
-        let session2: [String] = ["fufu", "kiki"]
-        
-        self.data?.append(session1)
-        self.data?.append(session2)
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,11 +24,11 @@ class MenuViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSo
     // AirbnbMenuDelegate
 
     func numberOfSession() -> Int {
-        return data!.count
+        return 2
     }
     
     func numberOfRowsInSession(session: Int) -> Int {
-        return data![session].count
+        return 3
     }
     
     func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
@@ -47,8 +39,25 @@ class MenuViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSo
         return "Session \(session)"
     }
     
-    func segueForAtIndexPath(indexPath: NSIndexPath) -> String {
-        return data![indexPath.section][indexPath.row]
+    func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController {
+        let viewController: ViewController = ViewController()
+        
+        let controller: UINavigationController = UINavigationController(rootViewController: viewController)
+        
+        switch indexPath.row {
+        case 0:
+            viewController.view.backgroundColor = UIColor.greenColor()
+            break
+        case 1:
+            viewController.view.backgroundColor = UIColor.yellowColor()
+            break
+        case 2:
+            viewController.view.backgroundColor = UIColor.redColor()
+            break
+        default:
+            break
+        }
+        return controller
     }
     
     func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {

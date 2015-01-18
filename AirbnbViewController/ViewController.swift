@@ -21,11 +21,16 @@ class ViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         
-        
+        self.phSwipeHandler = {[weak self]() -> AnyObject? in
+            
+            self?.airViewController?.showAirViewFromViewController(self?.navigationController, complete: nil)
+            
+            return nil
+        }
     }
 
     func leftButtonTouch() {
-        //self.airViewController()!.showAirViewFromViewController(self.navigationController, complete: nil)
+        self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
     }
     
 }
