@@ -79,7 +79,7 @@ var AirRadiansToDegrees = {(radians: CGFloat) -> CGFloat in
 
 let PHSegueRootIdentifier = "phair_root"
 
-class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource , UIGestureRecognizerDelegate {
+class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
     
     var titleNormalColor: UIColor?
     var titleHighlightColor: UIColor?
@@ -94,72 +94,77 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
    
     // private property
     
-    var _wrapperView: UIView = UIView(frame: CGRectZero)
+    var _wrapperView: UIView? = UIView(frame: CGRectZero)
     private var wrapperView: UIView? {
         get {
-            if self.wrapperView == nil {
+            if let wv = _wrapperView? {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
             } else {
-                return self.wrapperView
+                return _wrapperView
             }
         }
         set {
-            self.wrapperView = newValue!
+            _wrapperView = newValue
         }
     }
+    var _contentView: UIView? = UIView(frame: CGRectZero)
     private var contentView: UIView? {
         get {
-            if self.contentView == nil {
+            if let cv = _contentView? {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
             } else {
-                return self.contentView
+                return _contentView
             }
         }
         set {
-            self.contentView = newValue!
+            _contentView = newValue
         }
     }
+    var _leftView: UIView? = UIView(frame: CGRectZero)
     private var leftView: UIView? {
         get {
-            if self.leftView == nil {
+            if let lv = _leftView? {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
             } else {
-                return self.leftView
+                return _leftView
             }
         }
         set {
-            self.leftView = newValue!
+            _leftView = newValue
         }
     }
+    var _rightView: UIView? = UIView(frame: CGRectZero)
     private var rightView: UIView? {
         get {
-            if self.rightView == nil {
+            if let rv = _rightView? {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 view.userInteractionEnabled = true
                 return view
             } else {
-                return self.rightView
+                
+                return _rightView
             }
         }
         set {
-            self.rightView = newValue!
+            _rightView = newValue!
         }
     }
+    var _airImageView: UIImageView? = UIImageView()
     private var airImageView: UIImageView? {
         get {
-            if self.airImageView == nil {
+            if let aiv = _airImageView? {
                 let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.width))
                 imageView.userInteractionEnabled = true
                 return imageView
             } else {
-                return self.airImageView
+                return _airImageView
             }
         }
         set {
-            self.airImageView = newValue!
+            _airImageView = newValue
         }
     }
     
@@ -212,10 +217,15 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         super.init(coder: aDecoder)
     }
     
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init()
+    }
+    
     convenience init(viewController: UIViewController, atIndexPath:NSIndexPath) {
         self.init()
         let rect = UIScreen.mainScreen().applicationFrame
         self.view.frame = CGRectMake(0, 0, rect.width, rect.height)
+        self.bringViewControllerToTop(viewController, indexPath: atIndexPath)
     }
     
     override func viewDidLoad() {

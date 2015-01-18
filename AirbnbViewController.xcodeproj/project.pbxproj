@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */; };
 		6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */; };
-		6ECC4AE51A5562DB00D6B47F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE31A5562DB00D6B47F /* Main.storyboard */; };
 		6ECC4AE71A5562DB00D6B47F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE61A5562DB00D6B47F /* Images.xcassets */; };
 		6ECC4AEA1A5562DB00D6B47F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE81A5562DB00D6B47F /* LaunchScreen.xib */; };
 		6ECC4AF61A5562DB00D6B47F /* AirbnbViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AF51A5562DB00D6B47F /* AirbnbViewControllerTests.swift */; };
@@ -33,7 +32,6 @@
 		6ECC4ADE1A5562DB00D6B47F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		6ECC4AE41A5562DB00D6B47F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6ECC4AE61A5562DB00D6B47F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6ECC4AE91A5562DB00D6B47F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		6ECC4AEF1A5562DB00D6B47F /* AirbnbViewControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirbnbViewControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,7 +94,6 @@
 				6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */,
 				6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */,
 				6EE544EF1A6BCA8800D4790F /* ViewController.swift */,
-				6ECC4AE31A5562DB00D6B47F /* Main.storyboard */,
 				6ECC4AE61A5562DB00D6B47F /* Images.xcassets */,
 				6ECC4AE81A5562DB00D6B47F /* LaunchScreen.xib */,
 				6ECC4ADD1A5562DB00D6B47F /* Supporting Files */,
@@ -209,7 +206,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ECC4AE51A5562DB00D6B47F /* Main.storyboard in Resources */,
 				6ECC4AEA1A5562DB00D6B47F /* LaunchScreen.xib in Resources */,
 				6ECC4AE71A5562DB00D6B47F /* Images.xcassets in Resources */,
 			);
@@ -256,14 +252,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6ECC4AE31A5562DB00D6B47F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6ECC4AE41A5562DB00D6B47F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		6ECC4AE81A5562DB00D6B47F /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

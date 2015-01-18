@@ -8,11 +8,10 @@
 
 import UIKit
 
-class MenuViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource {
+class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         self.view.backgroundColor = UIColor.yellowColor()
     }
 
@@ -23,19 +22,19 @@ class MenuViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSo
 
     // AirbnbMenuDelegate
 
-    func numberOfSession() -> Int {
+    override func numberOfSession() -> Int {
         return 2
     }
     
-    func numberOfRowsInSession(session: Int) -> Int {
+    override func numberOfRowsInSession(session: Int) -> Int {
         return 3
     }
     
-    func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
+    override func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
         return "Row \(indexPath.row) in \(indexPath.section)"
     }
     
-    func titleForHeaderAtSession(session: Int) -> String {
+    override func titleForHeaderAtSession(session: Int) -> String {
         return "Session \(session)"
     }
     

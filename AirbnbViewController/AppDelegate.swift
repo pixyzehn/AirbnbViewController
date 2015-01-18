@@ -19,11 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        let viewController: AirbnbViewController = AirbnbViewController()
+        let viewController: ViewController = ViewController()
         let controller: UINavigationController = UINavigationController(rootViewController: viewController)
         viewController.view.backgroundColor = UIColor.greenColor()
         
-        let menuController: MenuViewController = MenuViewController()
+        let menuController: MenuViewController = MenuViewController(viewController: controller, atIndexPath: NSIndexPath(forRow: 0, inSection: 0))
+        
+        
+        self.window?.rootViewController = menuController
+        self.window?.makeKeyAndVisible()
         
         return true
     }
