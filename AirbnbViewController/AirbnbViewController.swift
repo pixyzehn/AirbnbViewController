@@ -163,7 +163,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     private var lastDeegreesRotateTransform: CGFloat?
-    
     private var panGestureRecognizer: UIPanGestureRecognizer?
     
     // number of data
@@ -211,7 +210,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Here you can init your properties
     }
     
     convenience init(viewController: UIViewController, atIndexPath:NSIndexPath) {
@@ -232,7 +230,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexSession = 0
         
         self.lastIndexInSession = Dictionary<Int, Int>()
-        self.lastIndexInSession![0] = 0
+        self.lastIndexInSession?[0] = 0
         self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
         self.delegate = self
@@ -292,7 +290,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexPath = indexPath
         
         if (indexPath? != nil && indexPath?.row != kIndexPathOutMenu.row) {
-            self.lastIndexInSession![indexPath!.section] = indexPath!.row
+            self.lastIndexInSession?[indexPath!.section] = indexPath?.row
             self.saveViewControler(controller!, atIndexPath: indexPath!)
         }
         
@@ -799,14 +797,14 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         self.updateButtonColor()
         if self.delegate != nil && self.delegate?.respondsToSelector("willShowAirViewController") != nil {
-            self.delegate?.willShowAirViewController!()
+            self.delegate?.willShowAirViewController?()
         }
         
         // Create Image for airImageView
         self.airImageView?.image = self.imageWithView(controller!.view)
         
         // Save thumbnail
-        self.saveThumbnailImage(self.airImageView!.image!, atIndexPath: self.currentIndexPath!)
+        self.saveThumbnailImage(self.airImageView?.image, atIndexPath: self.currentIndexPath!)
         
         // Save viewController
         self.saveViewControler(controller, atIndexPath: self.currentIndexPath!)
@@ -845,7 +843,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             
             return
             }, completion: {(finished: Bool) -> Void in
-                    complete!()
+                if let com = complete? {
+                    com()
+                }
         })
         
         self.airImageView?.tag = 1
@@ -1044,8 +1044,8 @@ extension UIViewController {
     
     var phSwipeHandler: (() -> AnyObject?)? {
         get {
-            var handle = {() -> AnyObject in
-                return objc_getAssociatedObject(self, SwipeTagHandle)
+            var handle = {() -> AnyObject? in
+                return objc_getAssociatedObject(self, SwipeTagHandle)?
             }
             return handle
         }
@@ -1076,16 +1076,12 @@ extension UIViewController {
         }
     }
     
-    var airViewController: AirbnbViewController? {
-        get {
-            let parent: UIViewController = self
-            
-            while (nil != parent.parentViewController && !(parent is AirbnbViewController)) {}
-            return parent as? AirbnbViewController
-        }
-        set {
-            
-        }
+    func airViewController() -> AirbnbViewController? {
+        var parent: UIViewController = self
+        parent = parent.parentViewController!
+        parent = parent.parentViewController!
+        print(parent)
+        return parent as MenuViewController
     }
     
     func phSwipeGestureRecognizer() -> UISwipeGestureRecognizer? {
@@ -1093,7 +1089,7 @@ extension UIViewController {
         var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
         if let sw = swipe {
         } else {
-            swipe = UISwipeGestureRecognizer(target: self, action: "swipeHanle")
+            swipe = UISwipeGestureRecognizer(target: self, action: "swipeHandler")
             swipe?.direction = UISwipeGestureRecognizerDirection.Right
             objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
         }
