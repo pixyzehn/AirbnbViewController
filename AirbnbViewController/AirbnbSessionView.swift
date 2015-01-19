@@ -18,8 +18,8 @@ class AirbnbSessionView: UIView {
                 return _button
             } else {
                 _button = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-                _button?.frame = CGRectMake(0, 40, self.frame.size.width, kHeaderTitleHeight - 40.0)
-                _button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+                _button!.frame = CGRectMake(0, 40, self.frame.size.width, kHeaderTitleHeight - 40.0)
+                _button!.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 self.addSubview(_button!)
                 return _button
             }

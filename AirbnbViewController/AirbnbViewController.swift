@@ -53,20 +53,15 @@ import UIKit
 }
 
 let kMenuItemHeight = 80
-let kSessionWidth = 220
-
+let kSessionWidth = 220.0
 let kLeftViewTransX = -50
 let kLeftViewRotate = -5
 let kAirImageViewRotate = -25
 let kRightViewTransX = 180
 let kRightViewTransZ = -150
-
 let kAirImageViewRotateMax = -42
-
 let kDuration = 0.2
-
 let kIndexPathOutMenu = NSIndexPath(forRow: 999, inSection: 0)
-
 let kHeaderTitleHeight: CGFloat = 80
 
 var AirDegreesToRadians = {(degrees: CGFloat) -> CGFloat in
@@ -81,8 +76,8 @@ let PHSegueRootIdentifier = "phair_root"
 
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
     
-    //var titleNormalColor: UIColor?
-    //var titleHighlightColor: UIColor?
+    var titleNormalColor: UIColor?
+    var titleHighlightColor: UIColor?
     
     var delegate: AirbnbMenuDelegate?
     var dataSource: AirbnbMenuDataSource?
@@ -94,73 +89,72 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
    
     // private property
     
-    var _wrapperView: UIView? = UIView(frame: CGRectZero)
+    var _wrapperView: UIView?
     private var wrapperView: UIView? {
         get {
             if let wv = _wrapperView? {
+                return wv
+            } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
-            } else {
-                return _wrapperView
             }
         }
         set {
             _wrapperView = newValue
         }
     }
-    var _contentView: UIView? = UIView(frame: CGRectZero)
+    var _contentView: UIView?
     private var contentView: UIView? {
         get {
             if let cv = _contentView? {
+                return cv
+            } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
-            } else {
-                return _contentView
             }
         }
         set {
             _contentView = newValue
         }
     }
-    var _leftView: UIView? = UIView(frame: CGRectZero)
+    var _leftView: UIView?
     private var leftView: UIView? {
         get {
             if let lv = _leftView? {
+                return lv
+            } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 return view
-            } else {
-                return _leftView
             }
         }
         set {
             _leftView = newValue
         }
     }
-    var _rightView: UIView? = UIView(frame: CGRectZero)
+    var _rightView: UIView?
     private var rightView: UIView? {
         get {
             if let rv = _rightView? {
+                return rv
+            } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 view.userInteractionEnabled = true
                 return view
-            } else {
-                
-                return _rightView
             }
         }
         set {
             _rightView = newValue!
         }
     }
-    var _airImageView: UIImageView? = UIImageView()
+    var _airImageView: UIImageView?
     private var airImageView: UIImageView? {
         get {
             if let aiv = _airImageView? {
+                return aiv
+            } else {
                 let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.width))
                 imageView.userInteractionEnabled = true
                 return imageView
-            } else {
-                return _airImageView
             }
         }
         set {
@@ -256,8 +250,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.rightView?.addSubview(self.airImageView!)
         
         // Setting color
-        //self.titleNormalColor! = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
-        //self.titleHighlightColor! = UIColor.blackColor()
+        self.titleNormalColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
+        self.titleHighlightColor = UIColor.blackColor()
         
         if let st = self.storyboard {
             self.performSegueWithIdentifier(PHSegueRootIdentifier, sender: nil)
@@ -625,9 +619,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 var button: UIButton? = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
                 button!.setTitle(title, forState: UIControlState.Normal)
                 button!.addTarget(self, action: "rowDidTouch:", forControlEvents: UIControlEvents.TouchUpInside)
-                //button!.setTitleColor(self.titleNormalColor, forState: UIControlState.Normal)
-                //button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Highlighted)
-                //button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Selected)
+                button!.setTitleColor(self.titleNormalColor, forState: UIControlState.Normal)
+                button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Highlighted)
+                button!.setTitleColor(self.titleHighlightColor!, forState: UIControlState.Selected)
                 button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 16)
                 button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 let y: CGFloat = CGFloat(firstTop) + CGFloat(self.heightAirMenuRow!) * CGFloat(j)

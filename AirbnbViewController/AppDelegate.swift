@@ -25,9 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let menuController: MenuViewController = MenuViewController(viewController: controller, atIndexPath: NSIndexPath(forRow: 0, inSection: 0))
         
-        
-        self.window?.rootViewController = menuController
-        self.window?.makeKeyAndVisible()
+        self.window!.rootViewController = menuController
+        self.window!.makeKeyAndVisible()
         
         return true
     }
