@@ -96,6 +96,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 return wv
             } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                _wrapperView = view
                 return view
             }
         }
@@ -110,6 +111,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 return cv
             } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                _contentView = view
                 return view
             }
         }
@@ -124,6 +126,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 return lv
             } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
+                _leftView = view
                 return view
             }
         }
@@ -139,6 +142,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             } else {
                 let view: UIView = UIView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 view.userInteractionEnabled = true
+                _rightView = view
                 return view
             }
         }
@@ -154,6 +158,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             } else {
                 let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.width))
                 imageView.userInteractionEnabled = true
+                _airImageView = imageView
                 return imageView
             }
         }
@@ -814,6 +819,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.contentView?.bringSubviewToFront(self.leftView!)
         self.contentView?.bringSubviewToFront(self.rightView!)
         
+        if controller != nil {
+            controller?.removeFromParentViewController()
+            controller?.view.removeFromSuperview()
+        }
+        
         // set identity transform
         self.airImageView?.layer.transform = CATransform3DIdentity
         self.contentView?.layer.transform = CATransform3DIdentity
@@ -829,17 +839,19 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         UIView.animateWithDuration(kDuration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
             
             self?.leftView?.alpha = 1
+            
             var airImageRotate: CATransform3D? = self?.airImageView?.layer.transform
-            airImageRotate = CATransform3DTranslate(airImageRotate!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ))
+            airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(CGFloat(kAirImageViewRotate)), 0, 1, 0)
             self?.airImageView?.layer.transform = airImageRotate!
             
             var rightTransform: CATransform3D? = self?.rightView?.layer.transform
-            rightTransform = CATransform3DRotate(rightTransform!, AirDegreesToRadians(CGFloat(kAirImageViewRotate)), 0, 1, 0)
-            self?.rightView?.layer.transform = airImageRotate!
+            rightTransform = CATransform3DTranslate(rightTransform!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ));
+            self?.rightView?.layer.transform = rightTransform!
 
             var leftTransform: CATransform3D? = self?.leftView?.layer.transform
             leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
-            self?.leftView?.layer.transform = airImageRotate!
+            leftTransform = CATransform3DTranslate(leftTransform!, -CGFloat(kLeftViewTransX) , 0, 0);
+            self?.leftView?.layer.transform = leftTransform!
             
             return
             }, completion: {(finished: Bool) -> Void in
