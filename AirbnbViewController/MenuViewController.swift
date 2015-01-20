@@ -46,21 +46,14 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         switch indexPath.row {
         case 0:
             viewController.view.backgroundColor = UIColor.greenColor()
-            break
         case 1:
             viewController.view.backgroundColor = UIColor.yellowColor()
-            break
         case 2:
             viewController.view.backgroundColor = UIColor.redColor()
-            break
         default:
             break
         }
         return controller
-    }
-    
-    func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
-        return nil
     }
 }
 
