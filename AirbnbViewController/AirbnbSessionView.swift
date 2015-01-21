@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+let kHeaderTitleHeight: CGFloat = 80
+
 class AirbnbSessionView: UIView {
     
     var _button: UIButton?
@@ -44,8 +46,6 @@ class AirbnbSessionView: UIView {
             _containView = newValue
         }
     }
-    
-    let kHeaderTitleHeight: CGFloat = 80.0
     
     override init() {
         super.init()
