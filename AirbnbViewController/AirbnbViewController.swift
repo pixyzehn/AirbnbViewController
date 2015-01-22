@@ -316,6 +316,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         controllerView.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         controllerView.frame = self.view.bounds
         self.view.addSubview(controllerView)
+        // 完了(didMove)を明示的に知らせないといけない
         self.fontViewController?.didMoveToParentViewController(self)
     }
     
@@ -469,9 +470,10 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Get thumbnailImage
         // self?.lastIndexInSession?[self.currentIndexSession!]!
-        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+        //let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
         
-        let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)!
+        let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
         if let image = nextThumbnail {
             self.airImageView?.image = image
         }
@@ -493,10 +495,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Get thumbnailImage
-        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+        //let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
+        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
 
         
-        let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)!
+        let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
         if let prev = prevThumbnail {
             self.airImageView?.image = prevThumbnail
         }
@@ -571,14 +574,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.session = self.dataSource?.numberOfSession()
         
         // Get height
-        if self.delegate?.respondsToSelector("heightForAirMenuRow") != nil{
-            //self.heightAirMenuRow = self.delegate?.heightForAirMenuRow!()
-        }
+        //self.heightAirMenuRow = self.delegate?.heightForAirMenuRow!()
+        self.heightAirMenuRow = 44
         
         var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
         var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
         
-        for var i:Int=0; i<self.session; i++ {
+        for var i:Int = 0; i < self.session; i++ {
             tempThumbnails.append(Dictionary<Int, UIImage>())
             tempViewControllers.append(Dictionary<Int, UIViewController>())
         }
@@ -605,10 +607,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 self.sessionViews![i] = sessionView!
             }
             // Set title for header session
-            if self.dataSource?.respondsToSelector("titleForHeaderAtSession:") != nil {
-                let sesionTitle: String = self.dataSource!.titleForHeaderAtSession(i)
-                sessionView?.button?.setTitle(sesionTitle, forState: UIControlState.Normal)
-            }
+            let sesionTitle: String? = self.dataSource?.titleForHeaderAtSession(i)
+            sessionView?.button?.setTitle(sesionTitle, forState: UIControlState.Normal)
         }
         
         // Init menu item for session
@@ -706,9 +706,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Pos for top/middle/bottom session
-        self.topSession!.top    = 0;
-        self.middleSession!.top = self.topSession!.bottom;
-        self.bottomSession!.top = self.middleSession!.bottom;
+        self.topSession!.top    = 0
+        self.middleSession!.top = self.topSession!.bottom
+        self.bottomSession!.top = self.middleSession!.bottom
         
         // Add top/middle/bottom to content view
         self.leftView?.addSubview(self.topSession!)
@@ -974,10 +974,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         if let tDic = thumbnailDic[indexPath.row] {
             return tDic
         } else {
-            return self.dataSource?.thumbnailImageAtIndexPath!(indexPath)
+            //return self.dataSource?.thumbnailImageAtIndexPath!(indexPath)
+            return nil
         }
-        
-        return nil
     }
     
     func saveThumbnailImage(image: UIImage?, atIndexPath indexPath: NSIndexPath) {
@@ -998,8 +997,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         } else {
             return self.dataSource?.viewControllerForIndexPath!(indexPath)
         }
-        
-        return nil
     }
     
     func saveViewControler(controller: UIViewController?, atIndexPath indexPath: NSIndexPath) {
