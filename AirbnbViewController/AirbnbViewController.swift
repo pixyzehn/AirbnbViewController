@@ -1086,7 +1086,8 @@ extension UIViewController {
                 } else {
                     self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
                 }
-                
+                //OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                //objc_setAssociatedObject(self, SwipeTagHandle, hander,UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             } else {
                 
                 if self.phSwipeGestureRecognizer()?.view != nil {
