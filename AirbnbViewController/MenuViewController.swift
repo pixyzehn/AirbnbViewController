@@ -12,7 +12,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.yellowColor()
+        self.view.backgroundColor = UIColor.whiteColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +36,10 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     
     override func titleForHeaderAtSession(session: Int) -> String {
         return "Session \(session)"
+    }
+    
+    func didSelectRowAtIndex(indexPath: NSIndexPath) {
+        print("hoge")
     }
     
     func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController {

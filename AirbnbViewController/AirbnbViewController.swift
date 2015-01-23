@@ -362,7 +362,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         })
     }
     
-    func handleTapOnAirImageView(swipe: UISwipeGestureRecognizer) {
+    func handleTapOnAirImageView(swipe: UITapGestureRecognizer) {
         self.hideAirViewOnComplete({() -> Void in
             self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath!)
         })
@@ -406,6 +406,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         if afterTop - firstTop > 0 {
             let topMiddleSessionView: Int = Int(self.leftView!.top) + sessionViewHeight + 40
+            
             if topMiddleSessionView < Int(self.view.height/2) {
                 distanceScroll = Int(self.view.height/2) - topMiddleSessionView
             } else {
@@ -413,6 +414,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             }
         } else {
             let bottomMiddleSessionView: Int = Int(self.leftView!.top) + sessionViewHeight*2
+            
             if bottomMiddleSessionView > Int(self.view.height/2) {
                 distanceScroll = bottomMiddleSessionView - Int(self.view.height/2)
             } else {
@@ -574,8 +576,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.session = self.dataSource?.numberOfSession()
         
         // Get height
-        //self.heightAirMenuRow = self.delegate?.heightForAirMenuRow!()
-        self.heightAirMenuRow = 44
+        if let heightForAirMenuRow = self.delegate?.heightForAirMenuRow?() {
+            self.heightAirMenuRow = heightForAirMenuRow
+        }
         
         var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
         var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
@@ -596,6 +599,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Init AirbnbSessionView
         let sessionHeight: CGFloat = CGFloat(self.view.frame.size.height - kHeaderTitleHeight)
+        
         for var i:Int = 0; i < self.session; i++ {
             var sessionView: AirbnbSessionView? = self.sessionViews?[i]
             if sessionView == nil {
@@ -637,7 +641,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 16)
                 button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 let y: CGFloat = CGFloat(firstTop) + CGFloat(self.heightAirMenuRow!) * CGFloat(j)
-                button?.frame = CGRectMake(0, y, 200, CGFloat(self.heightAirMenuRow!));
+                button?.frame = CGRectMake(0, y, 200, CGFloat(self.heightAirMenuRow!))
                 button?.tag = j;
                 sessionView!.containView!.tag = i;
                 sessionView?.containView?.addSubview(button!)
@@ -679,10 +683,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Init top/middle/bottom session view
         if sessionViews!.count == 1 {
+            
             self.middleSession = sessionViews![0]
             self.topSession = self.duplicate(self.middleSession!)
             self.bottomSession = self.duplicate(self.middleSession!)
+            
         } else if sessionViews!.count == 2 {
+            
             self.middleSession = sessionViews![self.currentIndexSession!]
             if currentIndexSession! == 0 {
                 self.topSession = self.duplicate(self.sessionViews![1]!)
@@ -691,7 +698,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 self.topSession = self.duplicate(self.sessionViews![0]!)
                 self.bottomSession = self.sessionViews![0]!
             }
+            
         } else {
+            
             self.middleSession = sessionViews![self.currentIndexSession!]
             if self.currentIndexSession! == 0 {
                 self.topSession = self.sessionViews![self.sessionViews!.count - 1]
@@ -703,6 +712,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             } else {
                 self.bottomSession = self.sessionViews![self.currentIndexSession! + 1]
             }
+            
         }
         
         // Pos for top/middle/bottom session
@@ -816,9 +826,10 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     func showAirViewFromViewController(controller: UIViewController?, complete: (() -> Void)? ) {
         
         self.updateButtonColor()
-//        if self.delegate != nil && self.delegate?.respondsToSelector("willShowAirViewController") != nil {
-//            self.delegate?.willShowAirViewController?()
-//        }
+        
+        if let willShow: () = self.delegate?.willShowAirViewController?() {
+            willShow
+        }
         
         // Create Image for airImageView
         self.airImageView?.image = self.imageWithView(controller!.view)
@@ -889,9 +900,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     func hideAirViewOnComplete(complete: (() -> Void)?) {
-//        if self.delegate != nil && self.delegate?.respondsToSelector("willHideAirViewController") != nil {
-//            self.delegate?.willShowAirViewController!()
-//        }
+
+        
+        if let willHide: () = self.delegate?.willHideAirViewController?() {
+            willHide
+        }
         
         UIView.animateWithDuration(kDuration, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
             
@@ -916,9 +929,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 
                 self.leftView?.layer.transform = CATransform3DIdentity
                 
-//                if self.delegate != nil && self.delegate?.respondsToSelector("didHideAirViewController") != nil {
-//                    self.delegate?.didHideAirViewController!()
-//                }
+                if let didHide: () = self.delegate?.didHideAirViewController?() {
+                    didHide
+                }
                 if let com = complete? {
                     com()
                 }
@@ -1066,7 +1079,7 @@ let SwipeTagHandle = "SWIPE_HANDER"
 let SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
-    
+   
     var phSwipeHandler: (() -> AnyObject?)? {
         get {
             var handle = {() -> AnyObject? in
@@ -1077,6 +1090,7 @@ extension UIViewController {
         set {
             if let hander = newValue {
                 
+                print(newValue)
                 if let view = self.phSwipeGestureRecognizer()?.view {
                     view.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
                 }
@@ -1086,8 +1100,8 @@ extension UIViewController {
                 } else {
                     self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
                 }
-                //OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                //objc_setAssociatedObject(self, SwipeTagHandle, hander,UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                
+                //objc_setAssociatedObject(self, SwipeTagHandle, x(),UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             } else {
                 
                 if self.phSwipeGestureRecognizer()?.view != nil {
