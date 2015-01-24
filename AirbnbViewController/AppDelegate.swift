@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let viewController: ViewController = ViewController()
         let controller: UINavigationController = UINavigationController(rootViewController: viewController)
-        viewController.view.backgroundColor = UIColor.greenColor()
+        viewController.view.backgroundColor = UIColor(red:0, green:0.23, blue:0.36, alpha:1)
         
         let menuController: MenuViewController = MenuViewController(viewController: controller, atIndexPath: NSIndexPath(forRow: 0, inSection: 0))
         
