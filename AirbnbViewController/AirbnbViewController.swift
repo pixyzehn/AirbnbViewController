@@ -167,7 +167,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             _airImageView = newValue
         }
     }
-    
+
     private var lastDeegreesRotateTransform: CGFloat?
     // pan for scroll
     private var panGestureRecognizer: UIPanGestureRecognizer?
@@ -471,13 +471,12 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Get thumbnailImage
-        // self?.lastIndexInSession?[self.currentIndexSession!]!
-        //let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
-        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-        
-        let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
-        if let image = nextThumbnail {
-            self.airImageView?.image = image
+        if let index = self.lastIndexInSession?[self.currentIndexSession!] {
+            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow:index, inSection: self.currentIndexSession!)
+            let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
+            if let image = nextThumbnail {
+                self.airImageView?.image = image
+            }
         }
         
         UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
@@ -497,13 +496,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Get thumbnailImage
-        //let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: self.lastIndexInSession![self.currentIndexSession!]!, inSection: self.currentIndexSession!)
-        let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-
-        
-        let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
-        if let prev = prevThumbnail {
-            self.airImageView?.image = prevThumbnail
+        if let index = self.lastIndexInSession?[self.currentIndexSession!] {
+            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: index, inSection: self.currentIndexSession!)
+            
+            let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
+            if let prev = prevThumbnail {
+                self.airImageView?.image = prevThumbnail
+            }
         }
         
         UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
@@ -1082,7 +1081,7 @@ extension UIViewController {
    
     var phSwipeHandler: (() -> AnyObject?)? {
         get {
-            var handle = {() -> AnyObject? in
+            var handle  = {() -> AnyObject? in
                 return objc_getAssociatedObject(self, SwipeTagHandle)?
             }
             return handle
