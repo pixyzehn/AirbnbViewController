@@ -238,7 +238,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexSession = 0
         
         self.lastIndexInSession = Dictionary<Int, Int>()
-        self.lastIndexInSession?[0] = 0
+        self.lastIndexInSession![0] = 0
         self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
         // Set delegate & dataSource
@@ -294,21 +294,23 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.reloadData()
     }
     
-    func bringViewControllerToTop(controller: UIViewController?, indexPath: NSIndexPath) {
+    func bringViewControllerToTop(controller: UIViewController?, indexPath: NSIndexPath?) {
         
         if (controller == nil) {
             return
         }
         
-        self.fontViewController?.removeFromParentViewController()
-        self.fontViewController?.view.removeFromSuperview()
+        if self.fontViewController != nil && self.fontViewController?.view.superview? != nil {
+            self.fontViewController?.removeFromParentViewController()
+            self.fontViewController?.view.removeFromSuperview()
+        }
         
         self.fontViewController = controller
         self.currentIndexPath = indexPath
         
-        if (indexPath.row != kIndexPathOutMenu.row) {
-            self.lastIndexInSession?[indexPath.section] = indexPath.row
-            self.saveViewControler(controller, atIndexPath: indexPath)
+        if indexPath != nil && indexPath?.row != kIndexPathOutMenu.row {
+            self.lastIndexInSession?[indexPath!.section] = indexPath?.row
+            self.saveViewControler(controller, atIndexPath: indexPath!)
         }
         
         self.addChildViewController(self.fontViewController!)
@@ -579,6 +581,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             self.heightAirMenuRow = heightForAirMenuRow
         }
         
+        // init
         var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
         var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
         
@@ -591,8 +594,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Get number rows of session
         var temp: Array = [Int]()
-        for (var i:Int = 0; i < self.session; i++) {
+        for var i:Int = 0; i < self.session; i++ {
             temp.append(self.dataSource!.numberOfRowsInSession(i))
+            
         }
         self.rowsOfSession = temp
         
@@ -600,7 +604,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         let sessionHeight: CGFloat = CGFloat(self.view.frame.size.height - kHeaderTitleHeight)
         
         for var i:Int = 0; i < self.session; i++ {
-            var sessionView: AirbnbSessionView? = self.sessionViews?[i]
+            var sessionView: AirbnbSessionView? = self.sessionViews![i]
             if sessionView == nil {
                 sessionView = AirbnbSessionView(frame:CGRectMake(30, 0, CGFloat(kSessionWidth), sessionHeight))
                 sessionView?.button?.setTitleColor(UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0), forState: UIControlState.Normal)
@@ -615,7 +619,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
         
         // Init menu item for session
-        for (var i:Int = 0; i < self.session; i++) {
+        for var i:Int = 0; i < self.session; i++ {
             var sessionView: AirbnbSessionView? = sessionViews![i]!
             // Remove all sub-view for contain of PHSessionView
             for view in sessionView!.containView!.subviews {
@@ -682,13 +686,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Init top/middle/bottom session view
         if sessionViews!.count == 1 {
-            
+            // count 1
             self.middleSession = sessionViews![0]
             self.topSession = self.duplicate(self.middleSession!)
             self.bottomSession = self.duplicate(self.middleSession!)
             
         } else if sessionViews!.count == 2 {
-            
+            // count 2
             self.middleSession = sessionViews![self.currentIndexSession!]
             if currentIndexSession! == 0 {
                 self.topSession = self.duplicate(self.sessionViews![1]!)
@@ -699,7 +703,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             }
             
         } else {
-            
+            //count more than 3
             self.middleSession = sessionViews![self.currentIndexSession!]
             if self.currentIndexSession! == 0 {
                 self.topSession = self.sessionViews![self.sessionViews!.count - 1]
@@ -815,10 +819,6 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             
         })
     }
-    
-    // property
-    
-    // getter, setter
     
     // Show/Hide air view controller
     
@@ -1078,62 +1078,67 @@ let SwipeTagHandle = "SWIPE_HANDER"
 let SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
+    
+    var phSwipeGestureRecognizer: UISwipeGestureRecognizer? {
+        // readonly
+        get {
+            
+            var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
+            if let sw = swipe {
+                
+            } else {
+                swipe = UISwipeGestureRecognizer(target: self, action: "swipeHandler")
+                swipe?.direction = UISwipeGestureRecognizerDirection.Right
+                objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            }
+            
+            return swipe
+        }
+    }
    
     var phSwipeHandler: (() -> AnyObject?)? {
         get {
-            var handle  = {() -> AnyObject? in
+            var handler  = {() -> AnyObject? in
                 return objc_getAssociatedObject(self, SwipeTagHandle)?
             }
-            return handle
+            return handler
         }
         set {
-            if let hander = newValue {
+            if var handler = newValue {
                 
-                print(newValue)
-                if let view = self.phSwipeGestureRecognizer()?.view {
-                    view.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                if let view = self.phSwipeGestureRecognizer?.view {
+                    view.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
                 
                 if let nv = self.navigationController? {
-                    nv.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                    nv.view.addGestureRecognizer(self.phSwipeGestureRecognizer!)
                 } else {
-                    self.view.addGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                    self.view.addGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
-                
-                //objc_setAssociatedObject(self, SwipeTagHandle, x(),UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                objc_setAssociatedObject(self, SwipeTagHandle, nil, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             } else {
                 
-                if self.phSwipeGestureRecognizer()?.view != nil {
-                    self.phSwipeGestureRecognizer()?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                if self.phSwipeGestureRecognizer?.view != nil {
+                    self.phSwipeGestureRecognizer?.view?.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
                 
-                if let ph = self.phSwipeGestureRecognizer()?.view {
-                    ph.removeGestureRecognizer(self.phSwipeGestureRecognizer()!)
+                if let ph = self.phSwipeGestureRecognizer?.view {
+                    ph.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
                 
             }
         }
     }
-    
-    func airViewController() -> AirbnbViewController? {
-        var parent: UIViewController = self
-        parent = parent.parentViewController!
-        parent = parent.parentViewController!
-        print(parent)
-        return parent as MenuViewController
-    }
-    
-    func phSwipeGestureRecognizer() -> UISwipeGestureRecognizer? {
         
-        var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
-        if let sw = swipe {
-        } else {
-            swipe = UISwipeGestureRecognizer(target: self, action: "swipeHandler")
-            swipe?.direction = UISwipeGestureRecognizerDirection.Right
-            objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+    var airViewController: AirbnbViewController? {
+        // readonly
+        get {
+            var parent: UIViewController = self
+            var parent2 = parent.parentViewController!
+            var parent3 = parent2.parentViewController!
+            print(parent)
+            return parent3 as MenuViewController
         }
-        
-        return swipe
     }
     
     func swipeHandler() {
