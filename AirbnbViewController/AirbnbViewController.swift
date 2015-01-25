@@ -688,20 +688,18 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         if sessionViews!.count == 1 {
             // count 1
             self.middleSession = self.sessionViews![0]
-            self.topSession = self.duplicate(self.middleSession!)
-            self.bottomSession = self.duplicate(self.middleSession!)
+            self.topSession = self.duplicate(self.middleSession!) as? AirbnbSessionView
+            self.bottomSession = self.duplicate(self.middleSession!) as? AirbnbSessionView
             
         } else if sessionViews!.count == 2 {
             // count 2
             self.middleSession = self.sessionViews![self.currentIndexSession!]
             if currentIndexSession! == 0 {
-                //self.topSession = self.duplicate(self.sessionViews![1]!)
                 self.topSession = self.sessionViews![1]!
-                self.bottomSession = self.sessionViews![1]!
+                self.bottomSession = self.duplicate(self.sessionViews![1]!) as? AirbnbSessionView
             } else {
-                //self.topSession = self.duplicate(self.sessionViews![0]!)
                 self.topSession = self.sessionViews![0]!
-                self.bottomSession = self.sessionViews![0]!
+                self.bottomSession = self.duplicate(self.sessionViews![0]!) as? AirbnbSessionView
             }
             
         } else {
@@ -1034,7 +1032,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         return img
     }
     
-    func duplicate(view: AirbnbSessionView) -> AirbnbSessionView? {
+    func duplicate(view: UIView) -> UIView? {
         let tempArchive: NSData = NSKeyedArchiver.archivedDataWithRootObject(view)
         return NSKeyedUnarchiver.unarchiveObjectWithData(tempArchive) as? AirbnbSessionView
     }
