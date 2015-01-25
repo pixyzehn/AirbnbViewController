@@ -24,6 +24,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
 
     override func numberOfSession() -> Int {
         return 2
+        // return 2のときおかしい
     }
     
     override func numberOfRowsInSession(session: Int) -> Int {

@@ -152,12 +152,12 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         }
     }
     var _airImageView: UIImageView?
-    private var airImageView: UIImageView? {
+    var airImageView: UIImageView? {
         get {
             if let aiv = _airImageView? {
                 return aiv
             } else {
-                let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.width))
+                let imageView: UIImageView = UIImageView(frame: CGRectMake(0, 0, self.view.width, self.view.height))
                 imageView.userInteractionEnabled = true
                 _airImageView = imageView
                 return imageView
@@ -238,7 +238,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.currentIndexSession = 0
         
         self.lastIndexInSession = Dictionary<Int, Int>()
-        self.lastIndexInSession![0] = 0
+        self.lastIndexInSession = [0:0]
         self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
         // Set delegate & dataSource
@@ -621,7 +621,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         // Init menu item for session
         for var i:Int = 0; i < self.session; i++ {
             var sessionView: AirbnbSessionView? = sessionViews![i]!
-            // Remove all sub-view for contain of PHSessionView
+            // Remove all sub-view for contain of AirbnbSessionView
             for view in sessionView!.containView!.subviews {
                 view.removeFromSuperview()
             }
@@ -687,18 +687,20 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         // Init top/middle/bottom session view
         if sessionViews!.count == 1 {
             // count 1
-            self.middleSession = sessionViews![0]
+            self.middleSession = self.sessionViews![0]
             self.topSession = self.duplicate(self.middleSession!)
             self.bottomSession = self.duplicate(self.middleSession!)
             
         } else if sessionViews!.count == 2 {
             // count 2
-            self.middleSession = sessionViews![self.currentIndexSession!]
+            self.middleSession = self.sessionViews![self.currentIndexSession!]
             if currentIndexSession! == 0 {
-                self.topSession = self.duplicate(self.sessionViews![1]!)
+                //self.topSession = self.duplicate(self.sessionViews![1]!)
+                self.topSession = self.sessionViews![1]!
                 self.bottomSession = self.sessionViews![1]!
             } else {
-                self.topSession = self.duplicate(self.sessionViews![0]!)
+                //self.topSession = self.duplicate(self.sessionViews![0]!)
+                self.topSession = self.sessionViews![0]!
                 self.bottomSession = self.sessionViews![0]!
             }
             
@@ -950,7 +952,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         let anchorPoint: CGPoint = CGPointMake(1, 0.5)
         let newX: CGFloat = self.airImageView!.width * anchorPoint.x
         let newY: CGFloat = self.airImageView!.height * anchorPoint.y
-        self.airImageView?.layer.position = CGPointMake(newX, newY + 100) // Add +100
+        self.airImageView?.layer.position = CGPointMake(newX, newY) // Add +100
         self.airImageView?.layer.anchorPoint = anchorPoint
         
         // Setup rightView to transform
@@ -1193,7 +1195,7 @@ extension UIView {
         }
         set {
             var frame: CGRect = self.frame
-            frame.origin.y = bottom - frame.size.height
+            frame.origin.y = newValue - frame.size.height
             self.frame = frame
         }
     }
@@ -1242,7 +1244,7 @@ extension UIView {
         get {
             var x: CGFloat = 0
             var view: UIView? = self
-            for (view; view? == nil; view?.superview) {
+            for view; view? == nil; view?.superview {
                x += view!.left
             }
             return x
