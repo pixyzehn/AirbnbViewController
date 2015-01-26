@@ -21,12 +21,18 @@ class ViewController: UIViewController {
         button.addTarget(self, action: "leftButtonTouch", forControlEvents: UIControlEvents.TouchUpInside)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
-        
-        self.phSwipeHandler = {[unowned self]() -> AnyObject? in
+       
+        var bh: BlockHandler = {() -> Void in
             self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
-            return nil
+            return
         }
+        self.abSwipeHandler = BlockWrapper.usingBlockWrapper(bh)
         
+        
+//        self.abSwipeHandler = {() -> () in
+//            self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
+//            return
+//        }
     }
 
     func leftButtonTouch() {

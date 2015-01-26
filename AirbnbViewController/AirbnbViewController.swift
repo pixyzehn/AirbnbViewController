@@ -1087,6 +1087,7 @@ extension UIViewController {
             if let sw = swipe {
                 
             } else {
+                // sw = nil
                 swipe = UISwipeGestureRecognizer(target: self, action: "swipeHandler")
                 swipe?.direction = UISwipeGestureRecognizerDirection.Right
                 objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -1095,16 +1096,13 @@ extension UIViewController {
             return swipe
         }
     }
-   
-    var phSwipeHandler: (() -> AnyObject?)? {
+    
+    var abSwipeHandler: AnyObject? {
         get {
-            var handler  = {() -> AnyObject? in
-                return objc_getAssociatedObject(self, SwipeTagHandle)?
-            }
-            return handler
+            return objc_getAssociatedObject(self, SwipeTagHandle)
         }
         set {
-            if var handler = newValue {
+            if var obj: AnyObject = newValue {
                 
                 if let view = self.phSwipeGestureRecognizer?.view {
                     view.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
@@ -1115,7 +1113,9 @@ extension UIViewController {
                 } else {
                     self.view.addGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
-                objc_setAssociatedObject(self, SwipeTagHandle, nil, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                
+                objc_setAssociatedObject(self, SwipeTagHandle, obj, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                
             } else {
                 
                 if self.phSwipeGestureRecognizer?.view != nil {
@@ -1125,7 +1125,6 @@ extension UIViewController {
                 if let ph = self.phSwipeGestureRecognizer?.view {
                     ph.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
-                
             }
         }
     }
@@ -1142,9 +1141,10 @@ extension UIViewController {
     }
     
     func swipeHandler() {
-        if let handler = self.phSwipeHandler? {
-            handler()
+        if let handler: AnyObject? = self.abSwipeHandler? {
+            handler
         }
+        //self.abSwipeHandler
     }
 }
 

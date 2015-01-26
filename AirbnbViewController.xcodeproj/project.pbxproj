@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6ECC1AB01A75E5600001A3B6 /* BlockWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */; };
 		6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */; };
 		6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */; };
 		6ECC4AE71A5562DB00D6B47F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE61A5562DB00D6B47F /* Images.xcassets */; };
@@ -28,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6ECC1AAE1A75E55F0001A3B6 /* AirbnbViewController-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirbnbViewController-Bridging-Header.h"; sourceTree = "<group>"; };
+		6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockWrapper.m; sourceTree = "<group>"; };
+		6ECC1AB11A75E5830001A3B6 /* BlockWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockWrapper.h; sourceTree = "<group>"; };
 		6ECC4ADA1A5562DB00D6B47F /* AirbnbViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirbnbViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECC4ADE1A5562DB00D6B47F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +69,8 @@
 			children = (
 				6ECC4AFF1A55631500D6B47F /* AirbnbViewController.swift */,
 				6ECC4B011A55632B00D6B47F /* AirbnbSessionView.swift */,
+				6ECC1AB11A75E5830001A3B6 /* BlockWrapper.h */,
+				6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */,
 			);
 			name = AirbnbViewController;
 			sourceTree = "<group>";
@@ -104,6 +110,7 @@
 		6ECC4ADD1A5562DB00D6B47F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6ECC1AAE1A75E55F0001A3B6 /* AirbnbViewController-Bridging-Header.h */,
 				6ECC4ADE1A5562DB00D6B47F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -228,6 +235,7 @@
 				6ECC4B001A55631500D6B47F /* AirbnbViewController.swift in Sources */,
 				6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */,
 				6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */,
+				6ECC1AB01A75E5600001A3B6 /* BlockWrapper.m in Sources */,
 				6EE544F01A6BCA8800D4790F /* ViewController.swift in Sources */,
 				6ECC4B021A55632B00D6B47F /* AirbnbSessionView.swift in Sources */,
 			);
@@ -301,6 +309,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "AirbnbViewController/AirbnbViewController-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -336,6 +345,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "AirbnbViewController/AirbnbViewController-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -344,10 +354,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = AirbnbViewController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirbnbViewController/AirbnbViewController-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -355,9 +368,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = AirbnbViewController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AirbnbViewController/AirbnbViewController-Bridging-Header.h";
 			};
 			name = Release;
 		};
