@@ -28,7 +28,6 @@ class ViewController: UIViewController {
         }
         self.abSwipeHandler = BlockWrapper.usingBlockWrapper(bh)
         
-        
 //        self.abSwipeHandler = {() -> () in
 //            self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
 //            return
