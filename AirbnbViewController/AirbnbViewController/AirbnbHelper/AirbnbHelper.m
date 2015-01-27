@@ -7,7 +7,6 @@
 //
 
 #import "AirbnbHelper.h"
-#import "AirbnbViewController-Swift.h"
 
 @interface AirbnbHelper()
 @end
