@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6ECC1AB01A75E5600001A3B6 /* BlockWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */; };
+		6ECC1AB01A75E5600001A3B6 /* AirbnbHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */; };
 		6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */; };
 		6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */; };
 		6ECC4AE71A5562DB00D6B47F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE61A5562DB00D6B47F /* Images.xcassets */; };
@@ -30,8 +30,8 @@
 
 /* Begin PBXFileReference section */
 		6ECC1AAE1A75E55F0001A3B6 /* AirbnbViewController-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirbnbViewController-Bridging-Header.h"; sourceTree = "<group>"; };
-		6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlockWrapper.m; sourceTree = "<group>"; };
-		6ECC1AB11A75E5830001A3B6 /* BlockWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockWrapper.h; sourceTree = "<group>"; };
+		6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirbnbHelper.m; sourceTree = "<group>"; };
+		6ECC1AB11A75E5830001A3B6 /* AirbnbHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirbnbHelper.h; sourceTree = "<group>"; };
 		6ECC4ADA1A5562DB00D6B47F /* AirbnbViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirbnbViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECC4ADE1A5562DB00D6B47F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,10 +67,9 @@
 		6EA460A31A6BC3DF003A60D4 /* AirbnbViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6ED29F861A77B0CC005675F8 /* Helper */,
 				6ECC4AFF1A55631500D6B47F /* AirbnbViewController.swift */,
 				6ECC4B011A55632B00D6B47F /* AirbnbSessionView.swift */,
-				6ECC1AB11A75E5830001A3B6 /* BlockWrapper.h */,
-				6ECC1AAF1A75E5600001A3B6 /* BlockWrapper.m */,
 			);
 			name = AirbnbViewController;
 			sourceTree = "<group>";
@@ -131,6 +130,15 @@
 				6ECC4AF41A5562DB00D6B47F /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6ED29F861A77B0CC005675F8 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				6ECC1AB11A75E5830001A3B6 /* AirbnbHelper.h */,
+				6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,7 +243,7 @@
 				6ECC4B001A55631500D6B47F /* AirbnbViewController.swift in Sources */,
 				6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */,
 				6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */,
-				6ECC1AB01A75E5600001A3B6 /* BlockWrapper.m in Sources */,
+				6ECC1AB01A75E5600001A3B6 /* AirbnbHelper.m in Sources */,
 				6EE544F01A6BCA8800D4790F /* ViewController.swift in Sources */,
 				6ECC4B021A55632B00D6B47F /* AirbnbSessionView.swift in Sources */,
 			);

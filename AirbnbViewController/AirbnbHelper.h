@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^BlockHandler)();
+typedef void (^airHandler)();
 
-@interface BlockWrapper: NSObject
+@interface AirbnbHelper: NSObject
 
-+ (id) usingBlockWrapper:(BlockHandler)block;
-+ (BlockHandler) usingAnyObjectWrapper:(id)obj;
++ (id) usingClosureWrapper:(airHandler)closure;
++ (airHandler) usingAnyObjectWrapper:(id)any;
 
 @end

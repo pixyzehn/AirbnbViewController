@@ -22,16 +22,10 @@ class ViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
        
-        var bh: BlockHandler? = {() -> Void in
+        self.airSwipeHandler = {() -> Void in
             self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
             return
         }
-        self.abSwipeHandler = bh
-        
-//        self.abSwipeHandler = {() -> () in
-//            self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
-//            return
-//        }
     }
 
     func leftButtonTouch() {
@@ -40,7 +34,6 @@ class ViewController: UIViewController {
     
     var _label: UILabel?
     var label: UILabel? {
-        // readonly
         get {
             if _label == nil {
                 _label = UILabel(frame: CGRectMake(0, 80, 320, 40))
