@@ -22,11 +22,11 @@ class ViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
        
-        var bh: BlockHandler = {() -> Void in
+        var bh: BlockHandler? = {() -> Void in
             self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
             return
         }
-        self.abSwipeHandler = BlockWrapper.usingBlockWrapper(bh)
+        self.abSwipeHandler = bh
         
 //        self.abSwipeHandler = {() -> () in
 //            self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)

@@ -695,6 +695,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             // count 2
             self.middleSession = self.sessionViews![self.currentIndexSession!]
             if currentIndexSession! == 0 {
+                var hoge = self.sessionViews
                 self.topSession = self.sessionViews![1]!
                 self.bottomSession = self.duplicate(self.sessionViews![1]!) as? AirbnbSessionView
             } else {
@@ -1074,8 +1075,8 @@ class AirViewControllerSegue: UIStoryboardSegue {
 *   EXtension UIViewController
 */
 
-let SwipeTagHandle = "SWIPE_HANDER"
-let SwipeObject = "SWIPE_OBJECT"
+var SwipeTagHandle = "SWIPE_HANDER"
+var SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
     
@@ -1083,26 +1084,27 @@ extension UIViewController {
         // readonly
         get {
             
-            var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, SwipeObject) as? UISwipeGestureRecognizer
+            var swipe: UISwipeGestureRecognizer? = objc_getAssociatedObject(self, &SwipeObject) as? UISwipeGestureRecognizer
             if let sw = swipe {
                 
             } else {
                 // sw = nil
                 swipe = UISwipeGestureRecognizer(target: self, action: "swipeHandler")
                 swipe?.direction = UISwipeGestureRecognizerDirection.Right
-                objc_setAssociatedObject(self, SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                objc_setAssociatedObject(self, &SwipeObject, swipe, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             }
             
             return swipe
         }
     }
     
-    var abSwipeHandler: AnyObject? {
+    var abSwipeHandler: BlockHandler? {
         get {
-            return objc_getAssociatedObject(self, SwipeTagHandle)
+            //return objc_getAssociatedObject(self, &SwipeTagHandle)
+            return BlockWrapper.usingAnyObjectWrapper(objc_getAssociatedObject(self, &SwipeTagHandle))
         }
         set {
-            if var obj: AnyObject = newValue {
+            if var obj: BlockHandler = newValue {
                 
                 if let view = self.phSwipeGestureRecognizer?.view {
                     view.removeGestureRecognizer(self.phSwipeGestureRecognizer!)
@@ -1114,7 +1116,7 @@ extension UIViewController {
                     self.view.addGestureRecognizer(self.phSwipeGestureRecognizer!)
                 }
                 
-                objc_setAssociatedObject(self, SwipeTagHandle, obj, UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+                objc_setAssociatedObject(self, &SwipeTagHandle, BlockWrapper.usingBlockWrapper(obj), UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
                 
             } else {
                 
@@ -1141,8 +1143,8 @@ extension UIViewController {
     }
     
     func swipeHandler() {
-        if let handler: AnyObject? = self.abSwipeHandler? {
-            handler
+        if let handler: BlockHandler? = self.abSwipeHandler? {
+            handler!()
         }
         //self.abSwipeHandler
     }

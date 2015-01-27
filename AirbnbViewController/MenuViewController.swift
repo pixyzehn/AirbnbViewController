@@ -23,7 +23,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     // AirbnbMenuDelegate
 
     override func numberOfSession() -> Int {
-        return 5
+        return 4
         // return 2のときおかしい
     }
     
@@ -50,11 +50,11 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         
         switch indexPath.row {
         case 0:
-            viewController.view.backgroundColor = UIColor.greenColor()
+            viewController.view.backgroundColor = UIColor(red:0.13, green:0.14, blue:0.15, alpha:1)
         case 1:
-            viewController.view.backgroundColor = UIColor.yellowColor()
+            viewController.view.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1)
         case 2:
-            viewController.view.backgroundColor = UIColor.redColor()
+            viewController.view.backgroundColor = UIColor(red:0.8, green:0, blue:0.48, alpha:1)
         default:
             break
         }
