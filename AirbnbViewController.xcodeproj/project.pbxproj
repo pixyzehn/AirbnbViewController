@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6ECC1AB01A75E5600001A3B6 /* AirbnbHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */; };
 		6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */; };
 		6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE11A5562DB00D6B47F /* MenuViewController.swift */; };
 		6ECC4AE71A5562DB00D6B47F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE61A5562DB00D6B47F /* Images.xcassets */; };
 		6ECC4AEA1A5562DB00D6B47F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ECC4AE81A5562DB00D6B47F /* LaunchScreen.xib */; };
 		6ECC4AF61A5562DB00D6B47F /* AirbnbViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AF51A5562DB00D6B47F /* AirbnbViewControllerTests.swift */; };
-		6ECC4B001A55631500D6B47F /* AirbnbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4AFF1A55631500D6B47F /* AirbnbViewController.swift */; };
-		6ECC4B021A55632B00D6B47F /* AirbnbSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECC4B011A55632B00D6B47F /* AirbnbSessionView.swift */; };
+		6ED29F891A77B27A005675F8 /* AirbnbSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F871A77B27A005675F8 /* AirbnbSessionView.swift */; };
+		6ED29F8A1A77B27A005675F8 /* AirbnbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F881A77B27A005675F8 /* AirbnbViewController.swift */; };
+		6ED29F8D1A77B283005675F8 /* AirbnbHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F8C1A77B283005675F8 /* AirbnbHelper.m */; };
 		6EE544F01A6BCA8800D4790F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE544EF1A6BCA8800D4790F /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,8 +30,6 @@
 
 /* Begin PBXFileReference section */
 		6ECC1AAE1A75E55F0001A3B6 /* AirbnbViewController-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AirbnbViewController-Bridging-Header.h"; sourceTree = "<group>"; };
-		6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirbnbHelper.m; sourceTree = "<group>"; };
-		6ECC1AB11A75E5830001A3B6 /* AirbnbHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirbnbHelper.h; sourceTree = "<group>"; };
 		6ECC4ADA1A5562DB00D6B47F /* AirbnbViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AirbnbViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECC4ADE1A5562DB00D6B47F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ECC4ADF1A5562DB00D6B47F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,8 +39,10 @@
 		6ECC4AEF1A5562DB00D6B47F /* AirbnbViewControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AirbnbViewControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ECC4AF41A5562DB00D6B47F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ECC4AF51A5562DB00D6B47F /* AirbnbViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirbnbViewControllerTests.swift; sourceTree = "<group>"; };
-		6ECC4AFF1A55631500D6B47F /* AirbnbViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirbnbViewController.swift; sourceTree = "<group>"; };
-		6ECC4B011A55632B00D6B47F /* AirbnbSessionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AirbnbSessionView.swift; sourceTree = "<group>"; };
+		6ED29F871A77B27A005675F8 /* AirbnbSessionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AirbnbSessionView.swift; path = AirbnbViewController/AirbnbSessionView.swift; sourceTree = "<group>"; };
+		6ED29F881A77B27A005675F8 /* AirbnbViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AirbnbViewController.swift; path = AirbnbViewController/AirbnbViewController.swift; sourceTree = "<group>"; };
+		6ED29F8B1A77B283005675F8 /* AirbnbHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AirbnbHelper.h; path = AirbnbViewController/AirbnbHelper/AirbnbHelper.h; sourceTree = "<group>"; };
+		6ED29F8C1A77B283005675F8 /* AirbnbHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AirbnbHelper.m; path = AirbnbViewController/AirbnbHelper/AirbnbHelper.m; sourceTree = "<group>"; };
 		6EE544EF1A6BCA8800D4790F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,9 +67,9 @@
 		6EA460A31A6BC3DF003A60D4 /* AirbnbViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6ED29F871A77B27A005675F8 /* AirbnbSessionView.swift */,
+				6ED29F881A77B27A005675F8 /* AirbnbViewController.swift */,
 				6ED29F861A77B0CC005675F8 /* Helper */,
-				6ECC4AFF1A55631500D6B47F /* AirbnbViewController.swift */,
-				6ECC4B011A55632B00D6B47F /* AirbnbSessionView.swift */,
 			);
 			name = AirbnbViewController;
 			sourceTree = "<group>";
@@ -135,8 +135,8 @@
 		6ED29F861A77B0CC005675F8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				6ECC1AB11A75E5830001A3B6 /* AirbnbHelper.h */,
-				6ECC1AAF1A75E5600001A3B6 /* AirbnbHelper.m */,
+				6ED29F8B1A77B283005675F8 /* AirbnbHelper.h */,
+				6ED29F8C1A77B283005675F8 /* AirbnbHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -240,12 +240,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ECC4B001A55631500D6B47F /* AirbnbViewController.swift in Sources */,
 				6ECC4AE21A5562DB00D6B47F /* MenuViewController.swift in Sources */,
 				6ECC4AE01A5562DB00D6B47F /* AppDelegate.swift in Sources */,
-				6ECC1AB01A75E5600001A3B6 /* AirbnbHelper.m in Sources */,
 				6EE544F01A6BCA8800D4790F /* ViewController.swift in Sources */,
-				6ECC4B021A55632B00D6B47F /* AirbnbSessionView.swift in Sources */,
+				6ED29F8A1A77B27A005675F8 /* AirbnbViewController.swift in Sources */,
+				6ED29F891A77B27A005675F8 /* AirbnbSessionView.swift in Sources */,
+				6ED29F8D1A77B283005675F8 /* AirbnbHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
