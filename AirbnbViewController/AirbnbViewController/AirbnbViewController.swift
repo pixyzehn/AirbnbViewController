@@ -984,7 +984,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         if let tDic = thumbnailDic[indexPath.row] {
             return tDic
         } else {
-            return self.dataSource?.thumbnailImageAtIndexPath!(indexPath)
+            if let th = self.dataSource?.thumbnailImageAtIndexPath?(indexPath) {
+                return th
+            } else {
+                return nil
+            }
         }
     }
     

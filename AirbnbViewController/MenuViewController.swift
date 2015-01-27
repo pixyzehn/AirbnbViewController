@@ -24,7 +24,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
 
     override func numberOfSession() -> Int {
         return 4
-        // return 2のときおかしい
     }
     
     override func numberOfRowsInSession(session: Int) -> Int {
@@ -40,7 +39,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     }
     
     func didSelectRowAtIndex(indexPath: NSIndexPath) {
-        print("hoge")
     }
     
     func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController {
