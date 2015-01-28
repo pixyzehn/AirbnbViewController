@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="A4Y-wF-P5u">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <scenes>
+        <!--Menu View Controller-->
+        <scene sceneID="PdA-Fp-Q0R">
+            <objects>
+                <viewController id="A4Y-wF-P5u" customClass="MenuViewController" customModule="AirbnbViewController_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hky-F4-nfN"/>
+                        <viewControllerLayoutGuide type="bottom" id="cwN-ex-wE4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="R1I-Qu-q7H">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="hSv-sK-Tk5" kind="custom" identifier="air_root" customClass="AirViewControllerSegue" customModule="AirbnbViewController_Sample" customModuleProvider="target" id="1QH-by-Yjc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qCi-Fs-uCX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="167" y="250"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="fz7-WX-XCZ">
+            <objects>
+                <navigationController id="hSv-sK-Tk5" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0zx-34-EOc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="n3b-TY-Peb" kind="relationship" relationship="rootViewController" id="HoI-1T-Jhi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Weh-c9-TA0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="901" y="250"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="gsd-cZ-p5a">
+            <objects>
+                <viewController id="n3b-TY-Peb" customClass="ViewController" customModule="AirbnbViewController_Sample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sGT-jf-Q6Y"/>
+                        <viewControllerLayoutGuide type="bottom" id="STD-8R-uxl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="B6E-I3-F5U">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="root" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYB-Jc-mJa">
+                                <rect key="frame" x="279" y="204" width="31" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Wb7-rY-8NP"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vSY-ED-a7r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1607" y="250"/>
+        </scene>
+    </scenes>
+</document>

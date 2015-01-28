@@ -17,17 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        let viewController: ViewController = ViewController()
-        let controller: UINavigationController = UINavigationController(rootViewController: viewController)
-        viewController.view.backgroundColor = UIColor(red:0, green:0.23, blue:0.36, alpha:1)
-        
-        let menuController: MenuViewController = MenuViewController(viewController: controller, atIndexPath: NSIndexPath(forRow: 0, inSection: 0))
-        
-        self.window!.rootViewController = menuController
-        self.window!.makeKeyAndVisible()
-
         return true
     }
 

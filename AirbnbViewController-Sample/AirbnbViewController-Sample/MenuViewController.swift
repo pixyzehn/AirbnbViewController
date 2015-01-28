@@ -10,24 +10,32 @@ import UIKit
 
 class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDataSource {
     
+    var sessionArray: [[String]] = [[String]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.blueColor()
+        
+        let session1: [String] = ["air_root", "segue1"]
+        let session2: [String] = ["segue2", "segue3"]
+        
+        self.sessionArray = [session1, session2]
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
         // Dispose of any resources that can be recreated.
     }
     
     // AirbnbMenuDelegate
-    
+
     override func numberOfSession() -> Int {
-        return 10
+        return sessionArray.count
     }
     
     override func numberOfRowsInSession(session: Int) -> Int {
-        return 3
+        return sessionArray[session].count
     }
     
     override func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String {
@@ -36,6 +44,11 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     
     override func titleForHeaderAtSession(session: Int) -> String {
         return "Session \(session)"
+    }
+    
+    override func segueForAtIndexPath(indexPath: NSIndexPath) -> String {
+        //return sessionArray[indexPath.section][indexPath.row]
+        return ""
     }
     
     func didSelectRowAtIndex(indexPath: NSIndexPath) {

@@ -47,7 +47,7 @@ import UIKit
     func numberOfRowsInSession(sesion: Int) -> Int
     func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
     func titleForHeaderAtSession(session: Int) -> String
-    optional func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage
+    optional func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage?
     optional func segueForAtIndexPath(indexPath: NSIndexPath) -> String
     optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
 }

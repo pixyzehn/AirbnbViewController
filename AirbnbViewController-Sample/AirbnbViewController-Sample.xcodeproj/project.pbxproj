@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E2A66421A78FAE800F65839 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E2A66411A78FAE800F65839 /* Main.storyboard */; };
 		6ED29F9D1A77BA85005675F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F9C1A77BA85005675F8 /* AppDelegate.swift */; };
 		6ED29F9F1A77BA85005675F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F9E1A77BA85005675F8 /* ViewController.swift */; };
 		6ED29FA41A77BA85005675F8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED29FA31A77BA85005675F8 /* Images.xcassets */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6E2A66411A78FAE800F65839 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		6ED29F971A77BA85005675F8 /* AirbnbViewController-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AirbnbViewController-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED29F9B1A77BA85005675F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ED29F9C1A77BA85005675F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				6ED29F9B1A77BA85005675F8 /* Info.plist */,
 				6ED29FC51A77C0F7005675F8 /* AirbnbViewController-Sample-Bridging-Header.h */,
+				6E2A66411A78FAE800F65839 /* Main.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E2A66421A78FAE800F65839 /* Main.storyboard in Resources */,
 				6ED29FA71A77BA85005675F8 /* LaunchScreen.xib in Resources */,
 				6ED29FA41A77BA85005675F8 /* Images.xcassets in Resources */,
 			);
@@ -431,6 +435,7 @@
 				6ED29FB81A77BA85005675F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6ED29FB91A77BA85005675F8 /* Build configuration list for PBXNativeTarget "AirbnbViewController-SampleTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +444,7 @@
 				6ED29FBB1A77BA85005675F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

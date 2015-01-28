@@ -26,6 +26,32 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         return true
     }
     
+    func didSelectRowAtIndex(indexPath: NSIndexPath) {
+        println("you select \(indexPath.row) in \(indexPath.section)")
+    }
+    
+    func willShowAirViewController() {
+        println("willShowAirViewController")
+    }
+    
+    func willHideAirViewController() {
+        println("willHideAirViewController")
+    }
+    
+    func didHideAirViewController() {
+        println("didHideAirViewController")
+    }
+    
+    func heightForAirMenuRow() -> CGFloat {
+        return 60.0
+    }
+
+    func indexPathDefaultValue() -> NSIndexPath? {
+
+        //return NSIndexPath(forRow: 2, inSection: 1)
+        return nil
+    }
+    
     // AirbnbDatasource
 
     override func numberOfSession() -> Int {
@@ -44,7 +70,13 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         return "Session \(session)"
     }
     
-    func didSelectRowAtIndex(indexPath: NSIndexPath) {
+    func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
+        
+        return nil
+    }
+    
+    override func segueForAtIndexPath(indexPath: NSIndexPath) -> String {
+        return ""
     }
     
     func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController {
@@ -63,26 +95,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
             break
         }
         return controller
-    }
-    
-//    optional func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool
-//    optional func didSelectRowAtIndex(indexPath: NSIndexPath)
-//    optional func willShowAirViewController()
-//    optional func willHideAirViewController()
-//    optional func didHideAirViewController()
-//    optional func heightForAirMenuRow() -> CGFloat
-//    optional func indexPathDefaultValue() -> NSIndexPath?
-
-//    
-//    @objc protocol AirbnbMenuDataSource: NSObjectProtocol {
-//        func numberOfSession() -> Int
-//        func numberOfRowsInSession(sesion: Int) -> Int
-//        func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
-//        func titleForHeaderAtSession(session: Int) -> String
-//        optional func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage
-//        optional func segueForAtIndexPath(indexPath: NSIndexPath) -> String
-//        optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
-//    }
-
+    }    
 }
 

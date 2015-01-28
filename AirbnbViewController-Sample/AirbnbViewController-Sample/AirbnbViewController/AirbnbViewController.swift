@@ -799,13 +799,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             } else if self.storyboard != nil {
                 
                 if self.dataSource != nil && self.dataSource?.respondsToSelector("segueForRowAtIndexPath:") != nil {
-                    let segue: NSString? = self.dataSource?.segueForAtIndexPath!(self.currentIndexPath!)
+                    let segue: NSString? = self.dataSource?.segueForAtIndexPath?(self.currentIndexPath!)
                     if segue?.length == 0 {
                         self.performSegueWithIdentifier(segue, sender: nil)
                     }
                 } else {
                     if self.dataSource != nil && self.dataSource?.respondsToSelector("viewControllerForIndexPath:") != nil {
-                        let controller: UIViewController? = self.dataSource?.viewControllerForIndexPath!(self.currentIndexPath!)
+                        let controller: UIViewController? = self.dataSource?.viewControllerForIndexPath?(self.currentIndexPath!)
                         self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
                     }
                 }
