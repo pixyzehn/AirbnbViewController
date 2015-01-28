@@ -21,6 +21,12 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     }
 
     // AirbnbMenuDelegate
+    
+    func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    // AirbnbDatasource
 
     override func numberOfSession() -> Int {
         return 4
@@ -58,5 +64,25 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         }
         return controller
     }
+    
+//    optional func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool
+//    optional func didSelectRowAtIndex(indexPath: NSIndexPath)
+//    optional func willShowAirViewController()
+//    optional func willHideAirViewController()
+//    optional func didHideAirViewController()
+//    optional func heightForAirMenuRow() -> CGFloat
+//    optional func indexPathDefaultValue() -> NSIndexPath?
+
+//    
+//    @objc protocol AirbnbMenuDataSource: NSObjectProtocol {
+//        func numberOfSession() -> Int
+//        func numberOfRowsInSession(sesion: Int) -> Int
+//        func titleForRowAtIndexPath(indexPath: NSIndexPath) -> String
+//        func titleForHeaderAtSession(session: Int) -> String
+//        optional func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage
+//        optional func segueForAtIndexPath(indexPath: NSIndexPath) -> String
+//        optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
+//    }
+
 }
 

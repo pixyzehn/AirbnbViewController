@@ -11,13 +11,11 @@ import UIKit
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
-       
-        self.view.backgroundColor = UIColor.blackColor()
         
         var button: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
         button.frame = CGRectMake(0, 0, 50, 35)
         button.setTitle("Menu", forState: UIControlState.Normal)
-        button.setTitleColor(UIColor.redColor(), forState: UIControlState.Normal)
+        button.setTitleColor(UIColor(red:0.3, green:0.69, blue:0.75, alpha:1), forState: UIControlState.Normal)
         button.addTarget(self, action: "leftButtonTouch", forControlEvents: UIControlEvents.TouchUpInside)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
@@ -49,5 +47,4 @@ class ViewController: UIViewController {
             _label = newValue
         }
     }
-    
 }

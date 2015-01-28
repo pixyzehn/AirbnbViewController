@@ -643,8 +643,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 let y: CGFloat = CGFloat(firstTop) + CGFloat(self.heightAirMenuRow!) * CGFloat(j)
                 button?.frame = CGRectMake(0, y, 200, CGFloat(self.heightAirMenuRow!))
-                button?.tag = j;
-                sessionView!.containView!.tag = i;
+                button?.tag = j
+                sessionView!.containView!.tag = i
                 sessionView?.containView?.addSubview(button!)
             }
         }
@@ -869,13 +869,13 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             
             
             var rightTransform: CATransform3D? = self?.rightView?.layer.transform
-            rightTransform = CATransform3DTranslate(rightTransform!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ));
+            rightTransform = CATransform3DTranslate(rightTransform!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ))
             self?.rightView?.layer.transform = rightTransform!
 
             
             var leftTransform: CATransform3D? = self?.leftView?.layer.transform
             leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(-CGFloat(kLeftViewRotate)), 0, 1, 0)
-            leftTransform = CATransform3DTranslate(leftTransform!, -CGFloat(kLeftViewTransX) , 0, 0);
+            leftTransform = CATransform3DTranslate(leftTransform!, -CGFloat(kLeftViewTransX) , 0, 0)
             self?.leftView?.layer.transform = leftTransform!
             
             return
@@ -1189,7 +1189,7 @@ extension UIView {
     
     var bottom: CGFloat {
         get {
-            return self.frame.origin.y + self.frame.size.height;
+            return self.frame.origin.y + self.frame.size.height
         }
         set {
             var frame: CGRect = self.frame
@@ -1292,7 +1292,7 @@ extension UIView {
     
     var screenFrame: CGRect {
         get {
-            return CGRectMake(self.screenViewX, self.screenViewY, self.width, self.height);
+            return CGRectMake(self.screenViewX, self.screenViewY, self.width, self.height)
         }
     }
     
