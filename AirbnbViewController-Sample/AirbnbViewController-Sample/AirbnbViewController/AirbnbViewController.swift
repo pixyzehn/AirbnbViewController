@@ -72,7 +72,7 @@ var AirRadiansToDegrees = {(radians: CGFloat) -> CGFloat in
     return radians * 180 / CGFloat(M_PI)
 }
 
-let SegueRootIdentifier = "air_root"
+let SegueRootIdentifier = "airroot"
 
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
     
@@ -262,7 +262,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         // Init root view controller
         if let st = self.storyboard {
-            self.performSegueWithIdentifier(SegueRootIdentifier, sender: nil)
+            self.performSegueWithIdentifier(SegueRootIdentifier, sender: self)
         }
         
         // Swipe
@@ -323,21 +323,22 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
     }
     
     // storyboard support
-    
-    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue is AirViewControllerSegue && sender? == nil {
-            
             var nextIndexPath: NSIndexPath? = self.currentIndexPath!
-            if segue?.identifier == SegueRootIdentifier {
+            if segue.identifier == SegueRootIdentifier {
                 if let delegate = self.delegate? {
                     nextIndexPath = delegate.indexPathDefaultValue!()
                 }
             }
-            var segu: AirViewControllerSegue = segue? as AirViewControllerSegue
+            var segu: AirViewControllerSegue = segue as AirViewControllerSegue
             segu.performBlock = {(rvc_segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
                 self.bringViewControllerToTop(dvc, indexPath: nextIndexPath!)
             }
         }
+        
     }
     
     // ContentView

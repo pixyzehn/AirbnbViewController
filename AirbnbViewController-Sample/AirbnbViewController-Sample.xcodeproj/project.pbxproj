@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6E2A66421A78FAE800F65839 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E2A66411A78FAE800F65839 /* Main.storyboard */; };
+		6E2A66441A79061C00F65839 /* BaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2A66431A79061C00F65839 /* BaseViewController.xib */; };
 		6ED29F9D1A77BA85005675F8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F9C1A77BA85005675F8 /* AppDelegate.swift */; };
 		6ED29F9F1A77BA85005675F8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED29F9E1A77BA85005675F8 /* ViewController.swift */; };
 		6ED29FA41A77BA85005675F8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED29FA31A77BA85005675F8 /* Images.xcassets */; };
@@ -30,7 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6E2A66411A78FAE800F65839 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		6E2A66431A79061C00F65839 /* BaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BaseViewController.xib; path = AirbnbViewController/BaseViewController.xib; sourceTree = "<group>"; };
 		6ED29F971A77BA85005675F8 /* AirbnbViewController-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AirbnbViewController-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED29F9B1A77BA85005675F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6ED29F9C1A77BA85005675F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +91,7 @@
 				6ED29F9C1A77BA85005675F8 /* AppDelegate.swift */,
 				6ED29F9E1A77BA85005675F8 /* ViewController.swift */,
 				6ED29FC61A77C1FA005675F8 /* MenuViewController.swift */,
+				6E2A66431A79061C00F65839 /* BaseViewController.xib */,
 				6ED29FA31A77BA85005675F8 /* Images.xcassets */,
 				6ED29FA51A77BA85005675F8 /* LaunchScreen.xib */,
 				6ED29F9A1A77BA85005675F8 /* Supporting Files */,
@@ -103,7 +104,6 @@
 			children = (
 				6ED29F9B1A77BA85005675F8 /* Info.plist */,
 				6ED29FC51A77C0F7005675F8 /* AirbnbViewController-Sample-Bridging-Header.h */,
-				6E2A66411A78FAE800F65839 /* Main.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -224,7 +224,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E2A66421A78FAE800F65839 /* Main.storyboard in Resources */,
+				6E2A66441A79061C00F65839 /* BaseViewController.xib in Resources */,
 				6ED29FA71A77BA85005675F8 /* LaunchScreen.xib in Resources */,
 				6ED29FA41A77BA85005675F8 /* Images.xcassets in Resources */,
 			);
@@ -367,6 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "AirbnbViewController-Sample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -377,6 +378,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "AirbnbViewController-Sample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
