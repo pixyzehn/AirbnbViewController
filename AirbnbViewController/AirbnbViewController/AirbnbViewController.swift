@@ -52,14 +52,13 @@ import UIKit
     optional func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController
 }
 
-let kMenuItemHeight = 80
 let kSessionWidth: CGFloat = 220
-let kLeftViewTransX = -50
-let kLeftViewRotate = -5
-let kAirImageViewRotate = -25
-let kRightViewTransX = 180
-let kRightViewTransZ = -150
-let kAirImageViewRotateMax = -42
+let kLeftViewTransX: CGFloat = -50
+let kLeftViewRotate: CGFloat = -5
+let kAirImageViewRotate: CGFloat = -25
+let kRightViewTransX: CGFloat = 180
+let kRightViewTransZ: CGFloat = -150
+let kAirImageViewRotateMax: CGFloat = -42
 let kDuration = 0.2
 let kIndexPathOutMenu = NSIndexPath(forRow: 999, inSection: 0)
 
@@ -401,11 +400,11 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         
         distanceScroll = abs(Int(self.view.height / 2) - distanceScroll)
         
-        let rotateDegress: CGFloat = CGFloat(distanceScroll * abs(kAirImageViewRotateMax - kAirImageViewRotate)) / (self.view.height / 2)
+        let rotateDegress: CGFloat = CGFloat(distanceScroll * Int(abs(kAirImageViewRotateMax - kAirImageViewRotate))) / (self.view.height / 2)
         self.lastDeegreesRotateTransform = rotateDegress
         
         var airImageRotate: CATransform3D = CATransform3DIdentity
-        airImageRotate = CATransform3DRotate(airImageRotate, AirDegreesToRadians(CGFloat(kAirImageViewRotate)-rotateDegress), 0, 1, 0)
+        airImageRotate = CATransform3DRotate(airImageRotate, AirDegreesToRadians(kAirImageViewRotate - rotateDegress), 0, 1, 0)
         self.airImageView?.layer.transform = airImageRotate
     }
     
@@ -516,7 +515,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             })
         } else {
             
-            let rotateDegress: CGFloat = abs(CGFloat(kAirImageViewRotateMax) - CGFloat(kAirImageViewRotate)) as CGFloat
+            let rotateDegress: CGFloat = abs(kAirImageViewRotateMax - kAirImageViewRotate) as CGFloat
             
             UIView.animateWithDuration(0.15, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {[weak self]() -> Void in
                 
@@ -579,7 +578,7 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         for var i:Int = 0; i < self.session; i++ {
             var sessionView: AirbnbSessionView? = self.sessionViews![i]
             if sessionView == nil {
-                sessionView = AirbnbSessionView(frame:CGRectMake(30, 0, CGFloat(kSessionWidth), sessionHeight))
+                sessionView = AirbnbSessionView(frame:CGRectMake(30, 0, kSessionWidth, sessionHeight))
                 sessionView?.button?.setTitleColor(UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0), forState: UIControlState.Normal)
                 sessionView?.button?.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 20)
                 sessionView?.button?.tag = i
@@ -827,8 +826,8 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.contentView?.layer.transform = CATransform3DIdentity
         
         var leftTransform: CATransform3D = CATransform3DIdentity
-        leftTransform = CATransform3DTranslate(leftTransform, CGFloat(kLeftViewTransX), 0, 0)
-        leftTransform = CATransform3DRotate(leftTransform, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
+        leftTransform = CATransform3DTranslate(leftTransform, kLeftViewTransX, 0, 0)
+        leftTransform = CATransform3DRotate(leftTransform, AirDegreesToRadians(kLeftViewRotate), 0, 1, 0)
         self.leftView?.layer.transform = leftTransform
         
         self.rightView?.alpha = 1
@@ -839,18 +838,18 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
             self?.leftView?.alpha = 1
             
             var airImageRotate: CATransform3D? = self?.airImageView?.layer.transform
-            airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(CGFloat(kAirImageViewRotate)), 0, 1, 0)
+            airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(kAirImageViewRotate), 0, 1, 0)
             self?.airImageView?.layer.transform = airImageRotate!
             
             
             var rightTransform: CATransform3D? = self?.rightView?.layer.transform
-            rightTransform = CATransform3DTranslate(rightTransform!, CGFloat(kRightViewTransX), 0, CGFloat(kRightViewTransZ))
+            rightTransform = CATransform3DTranslate(rightTransform!, kRightViewTransX, 0, kRightViewTransZ)
             self?.rightView?.layer.transform = rightTransform!
 
             
             var leftTransform: CATransform3D? = self?.leftView?.layer.transform
-            leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(-CGFloat(kLeftViewRotate)), 0, 1, 0)
-            leftTransform = CATransform3DTranslate(leftTransform!, -CGFloat(kLeftViewTransX) , 0, 0)
+            leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(-kLeftViewRotate), 0, 1, 0)
+            leftTransform = CATransform3DTranslate(leftTransform!, -kLeftViewTransX , 0, 0)
             self?.leftView?.layer.transform = leftTransform!
             
             return
@@ -883,16 +882,16 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
                 self?.leftView?.alpha = 0
             
                 var airImageRotate: CATransform3D? = self?.airImageView?.layer.transform
-                airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(-CGFloat(kAirImageViewRotate)), 0, 1, 0)
+                airImageRotate = CATransform3DRotate(airImageRotate!, AirDegreesToRadians(-kAirImageViewRotate), 0, 1, 0)
                 self?.airImageView?.layer.transform = airImageRotate!
             
                 var rightTransform: CATransform3D? = self?.rightView?.layer.transform
-                rightTransform = CATransform3DTranslate(rightTransform!, -CGFloat(kRightViewTransX), 0, -CGFloat(kRightViewTransZ))
+                rightTransform = CATransform3DTranslate(rightTransform!, -kRightViewTransX, 0, -kRightViewTransZ)
                 self?.rightView?.layer.transform = rightTransform!
             
                 var leftTransform: CATransform3D? = self?.leftView?.layer.transform
-                leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(CGFloat(kLeftViewRotate)), 0, 1, 0)
-                leftTransform = CATransform3DTranslate(leftTransform!, CGFloat(kLeftViewTransX), 0, 0)
+                leftTransform = CATransform3DRotate(leftTransform!, AirDegreesToRadians(kLeftViewRotate), 0, 1, 0)
+                leftTransform = CATransform3DTranslate(leftTransform!, kLeftViewTransX, 0, 0)
                 self?.leftView?.layer.transform = leftTransform!
             
             }, completion: {(finished: Bool) -> Void in

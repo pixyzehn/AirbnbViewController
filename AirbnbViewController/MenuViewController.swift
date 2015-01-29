@@ -15,11 +15,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         self.view.backgroundColor = UIColor.whiteColor()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // AirbnbMenuDelegate
     
     func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
@@ -47,8 +42,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     }
 
     func indexPathDefaultValue() -> NSIndexPath? {
-
-        //return NSIndexPath(forRow: 2, inSection: 1)
         return nil
     }
     
@@ -71,7 +64,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     }
     
     func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
-        
         return nil
     }
     

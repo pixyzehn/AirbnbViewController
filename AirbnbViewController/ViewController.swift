@@ -29,22 +29,4 @@ class ViewController: UIViewController {
     func leftButtonTouch() {
         self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
     }
-    
-    var _label: UILabel?
-    var label: UILabel? {
-        get {
-            if _label == nil {
-                _label = UILabel(frame: CGRectMake(0, 80, 320, 40))
-                _label?.backgroundColor = UIColor.clearColor()
-                _label?.textAlignment = NSTextAlignment.Center
-                _label?.font = UIFont.boldSystemFontOfSize(16)
-                _label?.textColor = UIColor.redColor()
-                self.view.addSubview(_label!)
-            }
-            return nil
-        }
-        set {
-            _label = newValue
-        }
-    }
 }
