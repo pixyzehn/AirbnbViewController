@@ -72,7 +72,7 @@ var AirRadiansToDegrees = {(radians: CGFloat) -> CGFloat in
     return radians * 180 / CGFloat(M_PI)
 }
 
-let SegueRootIdentifier = "airroot"
+let SegueRootIdentifier: String? = "airroot"
 
 class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
     
@@ -261,8 +261,9 @@ class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuData
         self.titleHighlightColor = UIColor.blackColor()
         
         // Init root view controller
-        if let st = self.storyboard {
-            self.performSegueWithIdentifier(SegueRootIdentifier, sender: self)
+        if self.storyboard != nil {
+            //self.navigationperformSegueWithIdentifier(SegueRootIdentifier, sender: nil)
+            self.performSegueWithIdentifier(SegueRootIdentifier, sender: nil)
         }
         
         // Swipe
