@@ -17,7 +17,6 @@ I have no choice but to use Objective-C in a part of whole.
 
 ## Install
 
-
 Copy & paste the AirbnbViewController folder into your project.
 
 And then, you need to have [project-name]-Bridging-Header.h because AirbnbViewController use Objective-c file.
@@ -27,7 +26,7 @@ And then, you need to have [project-name]-Bridging-Header.h because AirbnbViewCo
 ```objc
 #import "AirbnbHelper.h"
 ```
-
+Please refer to AirbnbViewController-Sample project. 
 
 ## Licence
 
