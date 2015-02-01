@@ -13,7 +13,7 @@ I have no choice but to use Objective-C in a part of whole.
 
 ## Demo
 
-![PathMenu](https://raw.githubusercontent.com/pixyzehn/PathMenu/master/Assets/PathMenu-Demo.gif)
+![AirbnbViewController](https://github.com/pixyzehn/AirbnbViewController/blob/master/Assets/demo.gif)
 
 ## Install
 
