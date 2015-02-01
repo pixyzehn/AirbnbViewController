@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-let kHeaderTitleHeight: CGFloat = 80
-
 class AirbnbSessionView: UIView {
     
     var _button: UIButton?

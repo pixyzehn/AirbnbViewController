@@ -17,10 +17,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
 
     // AirbnbMenuDelegate
     
-    func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    
     func didSelectRowAtIndex(indexPath: NSIndexPath) {
         println("you select \(indexPath.row) in \(indexPath.section)")
     }
@@ -39,10 +35,6 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     
     func heightForAirMenuRow() -> CGFloat {
         return 60.0
-    }
-
-    func indexPathDefaultValue() -> NSIndexPath? {
-        return nil
     }
     
     // AirbnbDatasource
@@ -66,11 +58,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     func thumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
         return nil
     }
-    
-    override func segueForAtIndexPath(indexPath: NSIndexPath) -> String {
-        return ""
-    }
-    
+        
     func viewControllerForIndexPath(indexPath: NSIndexPath) -> UIViewController {
         let viewController: ViewController = ViewController()
         

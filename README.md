@@ -1,7 +1,7 @@
 AirbnbViewController
 ====================
 
-Airbnb 4.7's three-dimensional slide menu. Unfortunately, this menu is obsoleted in Airbnb 5.0. In order not to forget the legend menu, I developed it.
+Airbnb version 4.7's three-dimensional slide menu in Swift. Unfortunately, the menu was obsoleted in Airbnb version 5.0. In order not to forget the legend menu, I developed it in Swift.
 
 Inspired by https://github.com/TaPhuocHai/PHAirViewController.
 
@@ -9,10 +9,11 @@ Overview
 ## Description
 
 Storyboard is not supported. You need to write code.
+I have no choice but to use Objective-C in a part of whole.
 
 ## Demo
 
-
+![PathMenu](https://raw.githubusercontent.com/pixyzehn/PathMenu/master/Assets/PathMenu-Demo.gif)
 
 ## Install
 
