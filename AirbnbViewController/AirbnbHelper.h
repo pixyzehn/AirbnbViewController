@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^airHandler)();
-
 @interface AirbnbHelper: NSObject
+
+typedef void (^airHandler)();
 
 + (id) usingClosureWrapper:(airHandler)closure;
 + (airHandler) usingAnyObjectWrapper:(id)any;

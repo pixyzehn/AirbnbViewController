@@ -1005,6 +1005,7 @@ var SwipeTagHandle = "SWIPE_HANDER"
 var SwipeObject = "SWIPE_OBJECT"
 
 extension UIViewController {
+
     var airSwipeGestureRecognizer: UISwipeGestureRecognizer? {
         // Readonly
         get {

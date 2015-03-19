@@ -15,11 +15,18 @@ I have no choice but to use Objective-C in a part of whole.
 
 ![AirbnbViewController](https://github.com/pixyzehn/AirbnbViewController/blob/master/Assets/demo.gif)
 
-## Install
+##Installation
 
-Copy & paste the AirbnbViewController folder into your project.
+The easiest way to get started is to use [CocoaPods](http://cocoapods.org/). Add the following line to your Podfile:
+
+```ruby
+use_frameworks!
+pod 'AirbnbViewController'
+```
 
 And then, you need to have [project-name]-Bridging-Header.h because AirbnbViewController use Objective-C file.
+The easiest way to create a bridging header file is to add an arbitrary Objective-C file to your project and let Xcode create the bridging header for you.
+Delete the original Objective-C file as you no longer need it.
 
 [project-name]-Bridging-Header.h
 
