@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-class AirbnbSessionView: UIView {
+public class AirbnbSessionView: UIView {
     
-    var _button: UIButton?
-    var button: UIButton? {
+    private var _button: UIButton?
+    public var button: UIButton? {
         get {
             if let btn = _button {
                 return _button
@@ -29,8 +29,8 @@ class AirbnbSessionView: UIView {
         }
     }
     
-    var _containView: UIView?
-    var containView: UIView? {
+    private var _containView: UIView?
+    public var containView: UIView? {
         get {
             if let cv = _containView {
                 return _containView
@@ -45,15 +45,15 @@ class AirbnbSessionView: UIView {
         }
     }
     
-    override init() {
+    override public init() {
         super.init()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init()
     }
     
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
     }
 
