@@ -16,7 +16,7 @@ class ViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.blackColor()
         
-        var button: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as UIButton
+        var button: UIButton = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
         button.frame = CGRectMake(0, 0, 50, 35)
         button.setTitle("Menu", forState: UIControlState.Normal)
         button.setTitleColor(UIColor(red:0.3, green:0.69, blue:0.75, alpha:1), forState: UIControlState.Normal)
@@ -25,13 +25,13 @@ class ViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         
         self.airSwipeHandler = {() -> Void in
-            self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
+            self.airViewController.showAirViewFromViewController(self.navigationController, complete: nil)
             return
         }
     }
     
     func leftButtonTouch() {
-        self.airViewController?.showAirViewFromViewController(self.navigationController, complete: nil)
+        self.airViewController.showAirViewFromViewController(self.navigationController, complete: nil)
     }
 }
 

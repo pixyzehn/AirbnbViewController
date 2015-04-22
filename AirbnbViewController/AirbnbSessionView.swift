@@ -11,6 +11,10 @@ import UIKit
 
 public class AirbnbSessionView: UIView {
     
+    required public init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     private var _button: UIButton?
     public var button: UIButton? {
         get {
@@ -18,8 +22,8 @@ public class AirbnbSessionView: UIView {
                 return _button
             } else {
                 _button = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-                _button!.frame = CGRectMake(0, 40, self.frame.size.width, kHeaderTitleHeight - 40.0)
-                _button!.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
+                _button?.frame = CGRectMake(0, 40, self.frame.size.width, kHeaderTitleHeight - 40.0)
+                _button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
                 self.addSubview(_button!)
                 return _button
             }
@@ -28,7 +32,7 @@ public class AirbnbSessionView: UIView {
             _button = newValue
         }
     }
-    
+
     private var _containView: UIView?
     public var containView: UIView? {
         get {
@@ -43,14 +47,6 @@ public class AirbnbSessionView: UIView {
         set {
             _containView = newValue
         }
-    }
-    
-    override public init() {
-        super.init()
-    }
-
-    required public init(coder aDecoder: NSCoder) {
-        super.init()
     }
     
     override public init(frame: CGRect) {

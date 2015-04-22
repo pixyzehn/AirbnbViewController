@@ -13,13 +13,11 @@
 
 @implementation AirbnbHelper
 
-+ (id) usingClosureWrapper:(airHandler)closure
-{
++ (id) usingClosureWrapper:(airHandler)closure {
     return (id)closure;
 }
 
-+ (airHandler) usingAnyObjectWrapper:(id)any
-{
++ (airHandler) usingAnyObjectWrapper:(id)any {
     return (airHandler)any;
 }
 
