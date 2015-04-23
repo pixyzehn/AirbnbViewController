@@ -7,7 +7,7 @@
 //
 
 /*
-view structer
+view structure
 -----------------
 view
     ---------------
@@ -27,7 +27,6 @@ view
             ---------
                 airImageView
 */
-
 
 import Foundation
 import UIKit
@@ -62,7 +61,8 @@ public let kDuration                       = 0.2
 public let kIndexPathOutMenu               = NSIndexPath(forRow: 999, inSection: 0)
 public let kHeaderTitleHeight: CGFloat     = 80
 
-//MARK: Convert
+//MARK: Convert unit
+
 private var AirDegreesToRadians = {(degrees: CGFloat) -> CGFloat in
     return degrees * CGFloat(M_PI) / 180.0
 }
@@ -72,20 +72,15 @@ private var AirRadiansToDegrees = {(radians: CGFloat) -> CGFloat in
 }
 
 public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbMenuDataSource, UIGestureRecognizerDelegate {
-    
+ 
     public var titleNormalColor: UIColor?
     public var titleHighlightColor: UIColor?
-    
     public var delegate: AirbnbMenuDelegate?
     public var dataSource: AirbnbMenuDataSource?
-    
     public var fontViewController: UIViewController?
     public var currentIndexPath: NSIndexPath?
-    
     public let complete = ({ () -> Void in })
    
-    //MARK: Private property
-    
     private var _wrapperView: UIView?
     public var wrapperView: UIView? {
         get {
@@ -101,6 +96,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             _wrapperView = newValue
         }
     }
+
     private var _contentView: UIView?
     public var contentView: UIView? {
         get {
@@ -116,6 +112,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             _contentView = newValue
         }
     }
+    
     private var _leftView: UIView?
     public var leftView: UIView? {
         get {
@@ -132,6 +129,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             _leftView = newValue
         }
     }
+    
     private var _rightView: UIView?
     public var rightView: UIView? {
         get {
@@ -148,6 +146,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             _rightView = newValue
         }
     }
+    
     private var _airImageView: UIImageView?
     public var airImageView: UIImageView? {
         get {
@@ -166,41 +165,20 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     }
 
     private var lastDeegreesRotateTransform: CGFloat?
-
     private var panGestureRecognizer: UIPanGestureRecognizer?
     
     public var session: Int?
     public var rowsOfSession: [Int]?
-    
     public var sessionViews: Dictionary<Int, AirbnbSessionView>?
-    
     public var currentIndexSession: Int?
-    
     public var isAnimation: Bool?
     public var topSession: AirbnbSessionView?
     public var middleSession: AirbnbSessionView?
     public var bottomSession: AirbnbSessionView?
-    
     public var lastIndexInSession: Dictionary<Int, Int>?
-    
-    /* [ // session 0
-    {0 : thumbnail image 0,1 : thumbnail image 1},
-    // session 1
-    {0 : thumbnail image 0,1 : thumbnail image 1},
-    ]
-    */
     public var thumbnailImages: [Dictionary<Int, UIImage>]?
-    
-    /* [ // session 0
-    {0 : view controller 0,1 : view controller 1},
-    // session 1
-    {0 : view controller 0,1 : view controller 1},
-    ]
-    */
     public var viewControllers: [Dictionary<Int, UIViewController>]?
-    
     public var heightAirMenuRow: CGFloat?
-    
     
     override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -220,51 +198,42 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        self.sessionViews = Dictionary<Int, AirbnbSessionView>()
-        self.currentIndexSession = 0
+        sessionViews = Dictionary<Int, AirbnbSessionView>()
+        currentIndexSession = 0
         
-        self.lastIndexInSession = [0:0]
-        self.currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
+        lastIndexInSession = [0:0]
+        currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
         self.delegate = self
         self.dataSource = self
         
-        // Init contentView
-        self.view.addSubview(self.wrapperView!)
-        self.wrapperView?.addSubview(self.contentView!)
+        self.view.addSubview(wrapperView!)
+        self.wrapperView?.addSubview(contentView!)
         
-        // Init left/rightView
-        self.contentView?.addSubview(self.leftView!)
-        self.contentView?.addSubview(self.rightView!)
+        self.contentView?.addSubview(leftView!)
+        self.contentView?.addSubview(rightView!)
         
-        // Init airImageView
-        self.rightView?.addSubview(self.airImageView!)
+        self.rightView?.addSubview(airImageView!)
         
-        // Setting color
         self.titleNormalColor = UIColor(red: 0.45, green: 0.45, blue: 0.45, alpha: 1.0)
         self.titleHighlightColor = UIColor.blackColor()
         
-        // Swipe
         let swipe: UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: "handleSwipeOnAirImageView:")
         swipe.direction = UISwipeGestureRecognizerDirection.Left
         self.airImageView?.addGestureRecognizer(swipe)
         
-        // Tap
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTapOnAirImageView:")
         self.airImageView?.addGestureRecognizer(tap)
         
-        // Pan
         self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handleRevealGesture:")
         self.panGestureRecognizer?.delegate = self
-        self.leftView?.addGestureRecognizer(self.panGestureRecognizer!)
+        self.leftView?.addGestureRecognizer(panGestureRecognizer!)
         
-        // Setup animation
         self.setupAnimation()
         
         self.leftView?.alpha = 0
         self.rightView?.alpha = 0
         
-        // Default height row value
         self.heightAirMenuRow = 44
     }
     
@@ -279,9 +248,9 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             return
         }
         
-        if self.fontViewController?.view.superview != nil {
-            self.fontViewController?.removeFromParentViewController()
-            self.fontViewController?.view.removeFromSuperview()
+        if let fvController = self.fontViewController {
+            fvController.removeFromParentViewController()
+            fvController.view.removeFromSuperview()
         }
         
         self.fontViewController = controller
@@ -301,18 +270,16 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.fontViewController?.didMoveToParentViewController(self)
     }
     
-    public func contentViewDidTap(recognizer: UITapGestureRecognizer) {
-        if self.airImageView?.tag == 1 {
-        }
-    }
-    
-    // Gesture delegate
+    //MARK: Gesture delegate
 
     public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !isAnimation!
+        if isAnimation == true {
+            return false
+        }
+        return true
     }
     
-    // AirImageView gesture
+    //MARK: AirImageView gesture
     
     public func handleSwipeOnAirImageView(swipe: UISwipeGestureRecognizer) {
         self.hideAirViewOnComplete({() -> Void in
@@ -326,9 +293,10 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         })
     }
     
-    // Gesture Based Reveal
+    //MARK: Gesture Based Reveal
 
     public func handleRevealGesture(recognizer: UIPanGestureRecognizer) {
+        
         if self.sessionViews?.count == 0 || self.sessionViews?.count == 1 {
             return
         }
@@ -392,9 +360,10 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.airImageView?.layer.transform = airImageRotate
     }
     
-    // Judge whether to transit or not
+    //AMRK: Judge whether to transit or not
     
     public func handleRevealGestureStateEndedWithRecognizer(recognizer: UIPanGestureRecognizer) {
+        
         if sessionViews?.count == 0 {
             return
         }
@@ -428,7 +397,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             self.currentIndexSession = 0
         }
         
-        // Get thumbnailImage
+        // Get thumbnailImage
         if let index = self.lastIndexInSession?[self.currentIndexSession!] {
             let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow:index, inSection: self.currentIndexSession!)
             let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
@@ -453,7 +422,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             self.currentIndexSession = self.sessionViews!.count - 1
         }
         
-        // Get thumbnailImage
+        // Get thumbnailImage
         if let index = self.lastIndexInSession?[self.currentIndexSession!] {
             let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: index, inSection: self.currentIndexSession!)
             let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
@@ -690,7 +659,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         }
     }
     
-    // PHAirMenuDelegate
+    //MARK: PHAirMenuDelegate
     
     public func numberOfSession() -> Int {
         return 0
@@ -708,7 +677,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         return ""
     }
     
-    // Button action
+    //MARK: Button action
     
     public func sessionButtonTouch(buttton: UIButton) {
         if buttton.tag == self.currentIndexSession! {
@@ -724,7 +693,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         
         self.currentIndexPath = NSIndexPath(forRow: button.tag, inSection: button.superview!.tag)
         
-        // Should select ?
+        // Should select
         if self.delegate != nil && self.delegate?.respondsToSelector("didSelectRowAtIndex:") != nil {
             self.delegate?.didSelectRowAtIndex!(self.currentIndexPath!)
         }
@@ -746,7 +715,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         })
     }
     
-    // Show/Hide air view controller
+    //MARK: Show/Hide air view controller
     
     public func showAirViewFromViewController(controller: UIViewController?, complete: (() -> Void)? ) {
         self.updateButtonColor()
@@ -755,16 +724,10 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             willShow
         }
         
-        // Create Image for airImageView
         self.airImageView?.image = self.imageWithView(controller!.view)
-        
-        // Save thumbnail
         self.saveThumbnailImage(self.airImageView?.image, atIndexPath: self.currentIndexPath!)
-        
-        // Save viewController
         self.saveViewControler(controller, atIndexPath: self.currentIndexPath!)
         
-        // Fix for touch and pan
         self.view.bringSubviewToFront(self.wrapperView!)
         self.contentView?.bringSubviewToFront(self.leftView!)
         self.contentView?.bringSubviewToFront(self.rightView!)
@@ -774,7 +737,6 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             controller?.view.removeFromSuperview()
         }
         
-        // set identity transform
         self.airImageView?.layer.transform = CATransform3DIdentity
         self.contentView?.layer.transform = CATransform3DIdentity
         
@@ -858,7 +820,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.airImageView?.tag = 0
     }
 
-    // Animation
+    //MARK: Animation
     
     public func setupAnimation() {
         var rotationAndPerspectiveTransform: CATransform3D = CATransform3DIdentity
@@ -896,7 +858,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.contentView!.layer.anchorPoint = anchorPoint3
     }
     
-    // Helper
+    //MARK: Helper
     
     public func getThumbnailImageAtIndexPath(indexPath: NSIndexPath) -> UIImage? {
         let thumbnailDic: Dictionary = self.thumbnailImages![indexPath.section]
@@ -953,7 +915,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         return NSKeyedUnarchiver.unarchiveObjectWithData(tempArchive) as? AirbnbSessionView
     }
     
-    // Clean up
+    //MARK: Clean up
     deinit {
         self.airImageView?.removeFromSuperview()
         self.airImageView = nil
@@ -971,9 +933,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     }
 }
 
-/**
-*   AirViewControllerSegue Class
-*/
+//MARK: AirViewControllerSegue Class
 
 public class AirViewControllerSegue: UIStoryboardSegue {
     public var performBlock = {(segue: AirViewControllerSegue, svc: UIViewController, dvc: UIViewController) -> Void in
@@ -984,10 +944,7 @@ public class AirViewControllerSegue: UIStoryboardSegue {
     }
 }
 
-
-/**
-*   EXtension UIViewController
-*/
+//MARK: EXtension UIViewController
 
 public var SwipeTagHandle = "SWIPE_HANDER"
 public var SwipeObject = "SWIPE_OBJECT"
@@ -1055,9 +1012,7 @@ public extension UIViewController {
     }
 }
 
-/**
-*   EXtension UIView
-*/
+//MARK: EXtension UIView
 
 public extension UIView {
     public var left: CGFloat {
