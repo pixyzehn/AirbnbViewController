@@ -15,7 +15,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         self.view.backgroundColor = UIColor.whiteColor()
     }
         
-    // AirbnbMenuDelegate
+    //MARK: AirbnbMenuDataSource
 
     override func numberOfSession() -> Int {
         return 10
@@ -51,6 +51,33 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
         return controller
     }
     
-    func didSelectRowAtIndex(indexPath: NSIndexPath) {    
+    //MARK: AirbnbMenuDelegate
+    
+    func didSelectRowAtIndex(indexPath: NSIndexPath) {
+        print("Did select row at index.")
+    }
+    
+    func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func willShowAirViewController() {
+        
+    }
+    
+    func willHideAirViewController() {
+        
+    }
+    
+    func didHideAirViewController() {
+        
+    }
+    
+    func heightForAirMenuRow() -> CGFloat {
+        return 90.0
+    }
+    
+    func indexPathDefaultValue() -> NSIndexPath? {
+        return NSIndexPath(index: 2)
     }
 }

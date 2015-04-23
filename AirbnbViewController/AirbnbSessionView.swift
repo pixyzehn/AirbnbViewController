@@ -22,9 +22,9 @@ public class AirbnbSessionView: UIView {
                 return _button
             } else {
                 _button = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
-                _button?.frame = CGRectMake(0, 40, self.frame.size.width, kHeaderTitleHeight - 40.0)
+                _button?.frame = CGRectMake(0, 40, frame.size.width, kHeaderTitleHeight - 40.0)
                 _button?.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Left
-                self.addSubview(_button!)
+                addSubview(_button!)
                 return _button
             }
         }
@@ -39,8 +39,8 @@ public class AirbnbSessionView: UIView {
             if let cv = _containView {
                 return _containView
             } else {
-                _containView = UIView(frame: CGRectMake(0, kHeaderTitleHeight + 20, self.frame.size.width, self.frame.size.height - kHeaderTitleHeight))
-                self.addSubview(_containView!)
+                _containView = UIView(frame: CGRectMake(0, kHeaderTitleHeight + 20, frame.size.width, frame.size.height - kHeaderTitleHeight))
+                addSubview(_containView!)
                 return _containView
             }
         }
