@@ -54,7 +54,7 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     //MARK: AirbnbMenuDelegate
     
     func didSelectRowAtIndex(indexPath: NSIndexPath) {
-        print("Did select row at index.")
+        print("didSelectRowAtIndex:\(indexPath.row)\n")
     }
     
     func shouldSelectRowAtIndex(indexPath: NSIndexPath) -> Bool {
@@ -62,15 +62,15 @@ class MenuViewController: AirbnbViewController, AirbnbMenuDelegate, AirbnbMenuDa
     }
     
     func willShowAirViewController() {
-        
+        print("willShowAirViewController\n")
     }
     
     func willHideAirViewController() {
-        
+        print("willHideAirViewController\n")
     }
     
     func didHideAirViewController() {
-        
+        print("didHideAirViewController\n")
     }
     
     func heightForAirMenuRow() -> CGFloat {

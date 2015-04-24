@@ -19,7 +19,7 @@ public class AirbnbSessionView: UIView {
     public var button: UIButton? {
         get {
             if let btn = _button {
-                return _button
+                return btn
             } else {
                 _button = UIButton.buttonWithType(UIButtonType.Custom) as? UIButton
                 _button?.frame = CGRectMake(0, 40, frame.size.width, kHeaderTitleHeight - 40.0)
@@ -37,7 +37,7 @@ public class AirbnbSessionView: UIView {
     public var containView: UIView? {
         get {
             if let cv = _containView {
-                return _containView
+                return cv
             } else {
                 _containView = UIView(frame: CGRectMake(0, kHeaderTitleHeight + 20, frame.size.width, frame.size.height - kHeaderTitleHeight))
                 addSubview(_containView!)
