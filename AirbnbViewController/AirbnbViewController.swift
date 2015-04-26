@@ -56,7 +56,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     public var delegate: AirbnbMenuDelegate?
     public var dataSource: AirbnbMenuDataSource?
     public var fontViewController: UIViewController?
-    public var currentIndexPath: NSIndexPath?
+    public var currentIndexPath: NSIndexPath = NSIndexPath(forItem: 0, inSection: 0)
     public let complete = ({ () -> Void in })
    
     private var _wrapperView: UIView?
@@ -177,7 +177,6 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         super.viewDidLoad()
         
         sessionViews = Dictionary<Int, AirbnbSessionView>()
-        //currentIndexSession = 0
         
         currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
@@ -219,7 +218,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.reloadData()
     }
     
-    public func bringViewControllerToTop(controller: UIViewController?, indexPath: NSIndexPath?) {
+    public func bringViewControllerToTop(controller: UIViewController?, indexPath: NSIndexPath) {
         
         if (controller == nil) {
             return
@@ -233,9 +232,9 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.fontViewController = controller
         self.currentIndexPath = indexPath
         
-        if indexPath != nil && indexPath?.row != kIndexPathOutMenu.row {
-            self.lastIndexInSession[indexPath!.section] = indexPath!.row
-            self.saveViewControler(controller, atIndexPath: indexPath!)
+        if indexPath.row != kIndexPathOutMenu.row {
+            self.lastIndexInSession[indexPath.section] = indexPath.row
+            self.saveViewControler(controller, atIndexPath: indexPath)
         }
         
         self.addChildViewController(self.fontViewController!)
@@ -260,13 +259,13 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     
     public func handleSwipeOnAirImageView(swipe: UISwipeGestureRecognizer) {
         self.hideAirViewOnComplete({() -> Void in
-            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath!)
+            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath)
         })
     }
     
     public func handleTapOnAirImageView(swipe: UITapGestureRecognizer) {
         self.hideAirViewOnComplete({() -> Void in
-            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath!)
+            self.bringViewControllerToTop(self.fontViewController, indexPath: self.currentIndexPath)
         })
     }
     
@@ -666,21 +665,21 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         
         // Should select
         if self.delegate != nil && self.delegate?.respondsToSelector("didSelectRowAtIndex:") != nil {
-            self.delegate?.didSelectRowAtIndex!(self.currentIndexPath!)
+            self.delegate?.didSelectRowAtIndex!(self.currentIndexPath)
         }
         
         // Get thumbnailImage
-        if let nextThumbnail = self.getThumbnailImageAtIndexPath(self.currentIndexPath!) {
+        if let nextThumbnail = self.getThumbnailImageAtIndexPath(self.currentIndexPath) {
             self.airImageView!.image = nextThumbnail
         }
         
         self.hideAirViewOnComplete({() -> Void in
-            let controller: UIViewController? = self.getViewControllerAtIndexPath(self.currentIndexPath!)
+            let controller: UIViewController? = self.getViewControllerAtIndexPath(self.currentIndexPath)
             if controller != nil {
-                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
+                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath)
             } else {
-                let controller: UIViewController! = self.dataSource?.viewControllerForIndexPath!(self.currentIndexPath!)
-                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath!)
+                let controller: UIViewController! = self.dataSource?.viewControllerForIndexPath!(self.currentIndexPath)
+                self.bringViewControllerToTop(controller, indexPath: self.currentIndexPath)
             }
             
         })
@@ -696,8 +695,8 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         }
         
         self.airImageView?.image = self.imageWithView(controller!.view)
-        self.saveThumbnailImage(self.airImageView?.image, atIndexPath: self.currentIndexPath!)
-        self.saveViewControler(controller, atIndexPath: self.currentIndexPath!)
+        self.saveThumbnailImage(self.airImageView?.image, atIndexPath: self.currentIndexPath)
+        self.saveViewControler(controller, atIndexPath: self.currentIndexPath)
         
         self.view.bringSubviewToFront(self.wrapperView!)
         self.contentView?.bringSubviewToFront(self.leftView!)
