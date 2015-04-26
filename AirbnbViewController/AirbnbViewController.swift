@@ -148,7 +148,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     public var session: Int?
     public var rowsOfSession: [Int]?
     public var sessionViews: Dictionary<Int, AirbnbSessionView>?
-    public var currentIndexSession: Int?
+    public var currentIndexSession: Int = 0
     public var isAnimation: Bool?
     public var topSession: AirbnbSessionView?
     public var middleSession: AirbnbSessionView?
@@ -177,7 +177,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         super.viewDidLoad()
         
         sessionViews = Dictionary<Int, AirbnbSessionView>()
-        currentIndexSession = 0
+        //currentIndexSession = 0
         
         currentIndexPath = NSIndexPath(forItem: 0, inSection: 0)
         
@@ -367,13 +367,13 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     }
     
     public func nextSession() {
-        self.currentIndexSession!++
+        self.currentIndexSession++
         if self.currentIndexSession >= self.sessionViews?.count {
             self.currentIndexSession = 0
         }
         
-        if let index = self.lastIndexInSession[self.currentIndexSession!] {
-            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow:index, inSection: self.currentIndexSession!)
+        if let index = self.lastIndexInSession[self.currentIndexSession] {
+            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow:index, inSection: self.currentIndexSession)
             let nextThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
             if let image = nextThumbnail {
                 self.airImageView?.image = image
@@ -391,13 +391,13 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     }
     
     public func prevSession() {
-        self.currentIndexSession!--
+        self.currentIndexSession--
         if self.currentIndexSession < 0 {
             self.currentIndexSession = self.sessionViews!.count - 1
         }
         
-        if let index = self.lastIndexInSession[self.currentIndexSession!] {
-            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: index, inSection: self.currentIndexSession!)
+        if let index = self.lastIndexInSession[self.currentIndexSession] {
+            let lastIndexInThisSession: NSIndexPath = NSIndexPath(forRow: index, inSection: self.currentIndexSession)
             let prevThumbnail: UIImage? = self.getThumbnailImageAtIndexPath(lastIndexInThisSession)
             if let prev = prevThumbnail {
                 self.airImageView?.image = prev
@@ -577,8 +577,8 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             self.bottomSession = self.duplicate(self.middleSession!) as? AirbnbSessionView
         } else if sessionViews!.count == 2 {
             // count 2
-            self.middleSession = self.sessionViews![self.currentIndexSession!]
-            if currentIndexSession! == 0 {
+            self.middleSession = self.sessionViews![self.currentIndexSession]
+            if currentIndexSession == 0 {
                 var hoge = self.sessionViews
                 self.topSession = self.sessionViews![1]!
                 self.bottomSession = self.duplicate(self.sessionViews![1]!) as? AirbnbSessionView
@@ -588,16 +588,16 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             }
         } else {
             //count more than 3
-            self.middleSession = sessionViews![self.currentIndexSession!]
-            if self.currentIndexSession! == 0 {
+            self.middleSession = sessionViews![self.currentIndexSession]
+            if self.currentIndexSession == 0 {
                 self.topSession = self.sessionViews![self.sessionViews!.count - 1]
             } else {
-                self.topSession = self.sessionViews![self.currentIndexSession! - 1]
+                self.topSession = self.sessionViews![self.currentIndexSession - 1]
             }
-            if self.currentIndexSession! + 1 >= self.sessionViews?.count {
+            if self.currentIndexSession + 1 >= self.sessionViews?.count {
                 self.bottomSession = sessionViews![0]
             } else {
-                self.bottomSession = self.sessionViews![self.currentIndexSession! + 1]
+                self.bottomSession = self.sessionViews![self.currentIndexSession + 1]
             }
         }
         
@@ -651,7 +651,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     //MARK: Button action
     
     public func sessionButtonTouch(buttton: UIButton) {
-        if buttton.tag == self.currentIndexSession! {
+        if buttton.tag == self.currentIndexSession {
             return
         } else {
             self.nextSession()
@@ -660,7 +660,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     
     public func rowDidTouch(button: UIButton) {
         // Save row touch in session
-        self.lastIndexInSession[self.currentIndexSession!] = button.superview!.tag
+        self.lastIndexInSession[self.currentIndexSession] = button.superview!.tag
         
         self.currentIndexPath = NSIndexPath(forRow: button.tag, inSection: button.superview!.tag)
         
