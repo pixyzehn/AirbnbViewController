@@ -334,7 +334,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.airImageView?.layer.transform = airImageRotate
     }
     
-    //AMRK: Judge whether to transit or not
+    //MARK: Judge whether to transit or not
     
     public func handleRevealGestureStateEndedWithRecognizer(recognizer: UIPanGestureRecognizer) {
         
@@ -459,15 +459,12 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             return
         }
         
-        // Get number session
         self.session = self.dataSource?.numberOfSession()
         
-        // Get height
         if let heightForAirMenuRow = self.delegate?.heightForAirMenuRow?() {
             self.heightAirMenuRow = heightForAirMenuRow
         }
         
-        // Init
         var tempThumbnails: [Dictionary<Int, UIImage>] = [Dictionary<Int, UIImage>()]
         var tempViewControllers: [Dictionary<Int, UIViewController>] = [Dictionary<Int, UIViewController>()]
         
@@ -478,7 +475,6 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.thumbnailImages = tempThumbnails
         self.viewControllers = tempViewControllers
         
-        // Get number rows of session
         var temp: Array = [Int]()
         for var i:Int = 0; i < self.session; i++ {
             temp.append(self.dataSource!.numberOfRowsInSession(i))
@@ -486,7 +482,6 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         }
         self.rowsOfSession = temp
         
-        // Init AirbnbSessionView
         let sessionHeight: CGFloat = CGFloat(self.view.frame.size.height - kHeaderTitleHeight)
         
         for var i:Int = 0; i < self.session; i++ {
@@ -499,15 +494,13 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
                 sessionView?.button?.addTarget(self, action: "sessionButtonTouch:", forControlEvents: UIControlEvents.TouchUpInside)
                 self.sessionViews![i] = sessionView!
             }
-            // Set title for header session
             let sesionTitle: String? = self.dataSource?.titleForHeaderAtSession(i)
             sessionView?.button?.setTitle(sesionTitle, forState: UIControlState.Normal)
         }
         
-        // Init menu item for session
         for var i:Int = 0; i < self.session; i++ {
             var sessionView: AirbnbSessionView? = sessionViews![i]!
-            // Remove all sub-view for contain of AirbnbSessionView
+
             for view in sessionView!.containView!.subviews {
                 view.removeFromSuperview()
             }
@@ -567,8 +560,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             self.bottomSession?.removeFromSuperview()
             self.bottomSession = nil
         }
-        
-        // Init top/middle/bottom session view
+        
         if sessionViews!.count == 1 {
             // count 1
             self.middleSession = self.sessionViews![0]
@@ -600,12 +592,10 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             }
         }
         
-        // Pos for top/middle/bottom session
         self.topSession!.top    = 0
         self.middleSession!.top = self.topSession!.bottom
         self.bottomSession!.top = self.middleSession!.bottom
         
-        // Add top/middle/bottom to content view
         self.leftView?.addSubview(self.topSession!)
         self.leftView?.addSubview(self.middleSession!)
         self.leftView?.addSubview(self.bottomSession!)
@@ -658,17 +648,15 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
     }
     
     public func rowDidTouch(button: UIButton) {
-        // Save row touch in session
+
         self.lastIndexInSession[self.currentIndexSession] = button.superview!.tag
         
         self.currentIndexPath = NSIndexPath(forRow: button.tag, inSection: button.superview!.tag)
         
-        // Should select
         if self.delegate != nil && self.delegate?.respondsToSelector("didSelectRowAtIndex:") != nil {
             self.delegate?.didSelectRowAtIndex!(self.currentIndexPath)
         }
         
-        // Get thumbnailImage
         if let nextThumbnail = self.getThumbnailImageAtIndexPath(self.currentIndexPath) {
             self.airImageView!.image = nextThumbnail
         }
@@ -796,16 +784,14 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         var rotationAndPerspectiveTransform: CATransform3D = CATransform3DIdentity
         rotationAndPerspectiveTransform.m34 = 1.0 / -600
         
-        // Setup airImageView, rightView to transform
         self.rightView?.layer.sublayerTransform = rotationAndPerspectiveTransform
-        // AnchorPoint is the central point
+
         let anchorPoint: CGPoint = CGPointMake(1, 0.5)
         let newX: CGFloat = self.airImageView!.width * anchorPoint.x
         let newY: CGFloat = self.airImageView!.height * anchorPoint.y
         self.airImageView!.layer.position = CGPointMake(newX, newY)
         self.airImageView!.layer.anchorPoint = anchorPoint
         
-        // Setup rightView to transform
         self.contentView?.layer.sublayerTransform = rotationAndPerspectiveTransform
         let anchorPoint2: CGPoint = CGPointMake(1, 0.5)
         let newX2: CGFloat = self.rightView!.width * anchorPoint2.x
@@ -813,14 +799,12 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
         self.rightView!.layer.position = CGPointMake(newX2, newY2)
         self.rightView!.layer.anchorPoint = anchorPoint2
         
-        // Setup leftView to transform
         let leftAnchorPoint: CGPoint = CGPointMake(-3, 0.5)
         let newLeftX: CGFloat = self.leftView!.width * leftAnchorPoint.x
         let newLeftY: CGFloat = self.leftView!.height * leftAnchorPoint.y
         self.leftView!.layer.position = CGPointMake(newLeftX, newLeftY)
         self.leftView!.layer.anchorPoint = leftAnchorPoint
         
-        // Setup contentView to transform
         let anchorPoint3: CGPoint = CGPointMake(1, 0.5)
         let newX3: CGFloat = self.contentView!.width * anchorPoint3.x
         let newY3: CGFloat = self.contentView!.height * anchorPoint3.y
