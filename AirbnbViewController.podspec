@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "AirbnbViewController"
-  s.version = "1.0.2"
+  s.version = "1.0.3"
   s.summary = "Airbnb 4.7's three-dimensional slide menu. Unfortunately, this menu was obsoleted in Airbnb 5.0. "
   s.homepage = 'https://github.com/pixyzehn/AirbnbViewController'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
