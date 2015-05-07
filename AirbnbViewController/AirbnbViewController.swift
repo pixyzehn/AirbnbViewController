@@ -560,7 +560,7 @@ public class AirbnbViewController: UIViewController, AirbnbMenuDelegate, AirbnbM
             self.bottomSession?.removeFromSuperview()
             self.bottomSession = nil
         }
-        
+
         if sessionViews!.count == 1 {
             // count 1
             self.middleSession = self.sessionViews![0]
