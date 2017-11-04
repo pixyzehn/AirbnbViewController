@@ -1,3 +1,5 @@
+**Notice: AirbnbViewController is no longer being maintained/updated.**
+
 AirbnbViewController
 ====================
 
@@ -15,7 +17,7 @@ I have no choice but to use Objective-C in a part of whole.
 
 ![AirbnbViewController](https://github.com/pixyzehn/AirbnbViewController/blob/master/Assets/demo.gif)
 
-##Installation
+## Installation
 
 The easiest way to get started is to use [CocoaPods](http://cocoapods.org/). Add the following line to your Podfile:
 
